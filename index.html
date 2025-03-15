@@ -13,19 +13,16 @@
         <div class="absolute flex size-full flex-col overflow-hidden pb-12">
             <div class="flex h-24 w-full items-center justify-between border-b-2 border-dashed px-6">
                 <h1 class="text-4xl">Pen Pong</h1>
-                <button
-                    id="stateButton"
-                    class="rounded-xl border-2 border-dashed px-4 py-2 text-2xl hover:cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-950"
-                >
+                <button id="state" class="rounded-xl border-2 border-dashed px-4 py-2 text-2xl hover:cursor-pointer hover:bg-blue-100 dark:hover:bg-blue-950">
                     Start
                 </button>
             </div>
             <div class="relative flex-1 overflow-hidden border-b-2 border-dashed">
                 <div class="pointer-events-none absolute top-0 grid w-full grid-cols-2 p-6 text-center text-8xl">
-                    <div id="playerScore">0</div>
-                    <div id="aiScore">0</div>
+                    <div id="score-a">0</div>
+                    <div id="score-b">0</div>
                 </div>
-                <canvas id="gameCanvas" class="size-full"></canvas>
+                <canvas id="game" class="size-full"></canvas>
             </div>
         </div>
         <script type="module" src="/src/main.ts"></script>

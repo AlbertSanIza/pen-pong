@@ -19,11 +19,11 @@ export class PongGame {
     ball: { x: number; y: number; speed: number; dx: number; dy: number } = { x: 0, y: 0, speed: 0, dx: 0, dy: 0 }
 
     constructor() {
-        this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
+        this.canvas = document.getElementById('game') as HTMLCanvasElement
         this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
-        this.stateButton = document.getElementById('stateButton') as HTMLElement
-        this.playerScoreElement = document.getElementById('playerScore') as HTMLElement
-        this.aiScoreElement = document.getElementById('aiScore') as HTMLElement
+        this.stateButton = document.getElementById('state') as HTMLElement
+        this.playerScoreElement = document.getElementById('score-a') as HTMLElement
+        this.aiScoreElement = document.getElementById('score-b') as HTMLElement
         this.resize()
         window.addEventListener('resize', () => this.resize())
         this.paddleHeight = this.canvas.height * 0.2
@@ -60,7 +60,7 @@ export class PongGame {
     }
 
     resize() {
-        const { width, height } = (document.getElementById('gameCanvas') as HTMLCanvasElement).getBoundingClientRect()
+        const { width, height } = (document.getElementById('game') as HTMLCanvasElement).getBoundingClientRect()
         this.canvas.width = width
         this.canvas.height = height
         this.paddleHeight = this.canvas.height * 0.2
