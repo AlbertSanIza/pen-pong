@@ -27,7 +27,7 @@ export class PongGame {
         this.resize()
         window.addEventListener('resize', () => this.resize())
         this.paddleHeight = this.canvas.height * 0.2
-        this.paddleWidth = 20
+        this.paddleWidth = 24
         this.particles = new ParticleSystem(this.ctx)
         this.initialize()
         this.setupEventListeners()
@@ -158,7 +158,7 @@ export class PongGame {
 
     draw() {
         // Clear canvas
-        this.ctx.fillStyle = '#EFF6FF'
+        this.ctx.fillStyle = '#eff6ff'
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
         // Draw center line
