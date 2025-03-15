@@ -5,18 +5,18 @@ export class PongGame {
     canvas: HTMLCanvasElement
     ctx: CanvasRenderingContext2D
     stateButton: HTMLElement
-    gameStarted: boolean = false
     playerScoreElement: HTMLElement
-    playerScore: number = 0
     aiScoreElement: HTMLElement
-    aiScore: number = 0
-    ballSize: number = 14
-    paddleHeight: number
     paddleWidth: number
-    particles: ParticleSystem
-    playerPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
-    aiPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
-    ball: { x: number; y: number; speed: number; dx: number; dy: number } = { x: 0, y: 0, speed: 0, dx: 0, dy: 0 }
+    paddleHeight: number
+    gameStarted!: boolean
+    playerScore!: number
+    aiScore!: number
+    particles!: ParticleSystem
+    playerPaddle!: { y: number; speed: number }
+    aiPaddle!: { y: number; speed: number }
+    ball!: { x: number; y: number; speed: number; dx: number; dy: number }
+    ballSize: number = 14
 
     constructor() {
         this.canvas = document.getElementById('game') as HTMLCanvasElement
@@ -25,35 +25,34 @@ export class PongGame {
         this.playerScoreElement = document.getElementById('score-a') as HTMLElement
         this.aiScoreElement = document.getElementById('score-b') as HTMLElement
         this.resize()
+        this.paddleWidth = 30
         this.paddleHeight = this.canvas.height * 0.2
-        this.paddleWidth = 24
-        this.particles = new ParticleSystem(this.ctx)
         this.initialize()
         this.setupEventListeners()
-        this.drawCenterLine()
     }
 
     initialize() {
         this.gameStarted = false
         this.playerScore = 0
         this.aiScore = 0
+        this.particles = new ParticleSystem(this.ctx)
         this.playerPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
             speed: 0
         }
         this.aiPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
-            speed: 1
+            speed: 2
         }
-        this.particles = new ParticleSystem(this.ctx)
         this.resetBall()
+        this.drawCenterLine()
     }
 
     resetBall() {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: 6,
+            speed: 8,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
@@ -132,7 +131,7 @@ export class PongGame {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScore++
             this.playerScoreElement.textContent = `${this.playerScore}`
-            this.aiPaddle.speed += 0.1
+            this.aiPaddle.speed += 0.15
             // audioManager.playScore()
             this.resetBall()
         }
