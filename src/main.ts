@@ -67,8 +67,6 @@ export class PongGame {
 
     setupEventListeners() {
         this.startButton.addEventListener('click', () => this.startGame())
-
-        // Touch controls
         this.canvas.addEventListener('touchmove', (e) => {
             e.preventDefault()
             const touch = e.touches[0]
@@ -76,8 +74,6 @@ export class PongGame {
             const relativeY = touch.clientY - rect.top
             this.playerPaddle.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
         })
-
-        // Mouse controls for desktop testing
         this.canvas.addEventListener('mousemove', (e) => {
             const rect = this.canvas.getBoundingClientRect()
             const relativeY = e.clientY - rect.top
