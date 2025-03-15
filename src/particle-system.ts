@@ -33,7 +33,7 @@ export class ParticleSystem {
             dy: isExplosion ? (Math.random() - 0.5) * 15 : (Math.random() - 0.5) * 2 + dy * 0.5,
             life: isExplosion ? 1.0 : 0.8,
             size: isExplosion ? Math.random() * 6 + 2 : 3,
-            color: isExplosion ? this.colors[Math.floor(Math.random() * this.colors.length)] : `hsl(${Math.random() * 60 + 180}, 100%, 50%)`
+            color: isExplosion ? this.colors[Math.floor(Math.random() * this.colors.length)] : `hsl(${Math.random() * 30 + 210}, 100%, 50%)`
         }
     }
 
