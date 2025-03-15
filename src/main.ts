@@ -52,7 +52,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: 6,
+            speed: 0.2,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
@@ -180,11 +180,11 @@ export class PongGame {
 
         // Draw ball with glow effect
         this.ctx.save()
-        this.ctx.shadowBlur = 20
-        this.ctx.shadowColor = '#ff6600'
+        this.ctx.shadowBlur = 30
+        this.ctx.shadowColor = '#155dfc'
         this.ctx.beginPath()
         this.ctx.arc(this.ball.x, this.ball.y, this.ballSize, 0, Math.PI * 2)
-        this.ctx.fillStyle = '#ff8833'
+        this.ctx.fillStyle = '#1447e6'
         this.ctx.fill()
         this.ctx.closePath()
         this.ctx.restore()
