@@ -52,7 +52,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: 0.2,
+            speed: 6,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
@@ -96,10 +96,6 @@ export class PongGame {
     }
 
     update() {
-        // Previous ball position
-        const prevX = this.ball.x
-        const prevY = this.ball.y
-
         // Update ball position
         this.ball.x += this.ball.dx * this.ball.speed
         this.ball.y += this.ball.dy * this.ball.speed
@@ -113,7 +109,7 @@ export class PongGame {
         this.particles.update()
 
         // Ball collision with top and bottom walls
-        if (this.ball.y <= 0 || this.ball.y >= this.canvas.height) {
+        if (this.ball.y - this.ballSize <= 0 || this.ball.y + this.ballSize >= this.canvas.height) {
             this.ball.dy *= -1
             // audioManager.playWallHit()
         }
@@ -132,17 +128,17 @@ export class PongGame {
         }
 
         // Scoring and explosions
-        if (this.ball.x <= 0) {
-            this.particles.createExplosion(this.ball.x, this.ball.y)
-            this.aiScore++
-            this.aiScoreElement.textContent = this.aiScore
-            // audioManager.playScore()
-            this.resetBall()
-        }
         if (this.ball.x >= this.canvas.width) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScore++
             this.playerScoreElement.textContent = this.playerScore
+            // audioManager.playScore()
+            this.resetBall()
+        }
+        if (this.ball.x <= 0) {
+            this.particles.createExplosion(this.ball.x, this.ball.y)
+            this.aiScore++
+            this.aiScoreElement.textContent = this.aiScore
             // audioManager.playScore()
             this.resetBall()
         }
