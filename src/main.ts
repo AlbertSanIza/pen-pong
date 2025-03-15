@@ -31,6 +31,7 @@ export class PongGame {
         this.particles = new ParticleSystem(this.ctx)
         this.initialize()
         this.setupEventListeners()
+        this.drawCenterLine()
     }
 
     initialize() {
@@ -152,11 +153,7 @@ export class PongGame {
         }
     }
 
-    draw() {
-        // Clear canvas
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
-        // Draw center line
+    drawCenterLine() {
         this.ctx.setLineDash([5, 3])
         this.ctx.beginPath()
         this.ctx.moveTo(this.canvas.width / 2, 0)
@@ -164,6 +161,14 @@ export class PongGame {
         this.ctx.strokeStyle = '#155dfc'
         this.ctx.stroke()
         this.ctx.setLineDash([])
+    }
+
+    draw() {
+        // Clear canvas
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+        // Draw center line
+        this.drawCenterLine()
 
         // Draw paddles
         this.ctx.fillStyle = '#155dfc'
