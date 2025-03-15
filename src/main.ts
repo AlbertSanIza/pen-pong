@@ -131,14 +131,14 @@ export class PongGame {
         if (this.ball.x >= this.canvas.width) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScore++
-            this.playerScoreElement.textContent = this.playerScore
+            this.playerScoreElement.textContent = `${this.playerScore}`
             // audioManager.playScore()
             this.resetBall()
         }
         if (this.ball.x <= 0) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.aiScore++
-            this.aiScoreElement.textContent = this.aiScore
+            this.aiScoreElement.textContent = `${this.aiScore}`
             // audioManager.playScore()
             this.resetBall()
         }
