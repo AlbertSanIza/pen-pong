@@ -181,7 +181,7 @@ export class PongGame {
         // Draw ball with glow effect
         this.ctx.save()
         this.ctx.shadowBlur = 30
-        this.ctx.shadowColor = '#155dfc'
+        this.ctx.shadowColor = '#1447e6'
         this.ctx.beginPath()
         this.ctx.arc(this.ball.x, this.ball.y, this.ballSize, 0, Math.PI * 2)
         this.ctx.fillStyle = '#1447e6'
