@@ -85,9 +85,13 @@ export class PongGame {
         if (!this.gameStarted) {
             this.gameStarted = true
             this.startButton.innerHTML = 'Restart'
-            // this.startButton.style.display = 'none'
             // audioManager.init()
             this.gameLoop()
+        } else {
+            this.gameStarted = false
+            this.startButton.innerHTML = 'Start'
+            this.initialize()
+            this.draw()
         }
     }
 
@@ -158,11 +162,11 @@ export class PongGame {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
         // Draw center line
-        this.ctx.setLineDash([5, 15])
+        this.ctx.setLineDash([5, 3])
         this.ctx.beginPath()
         this.ctx.moveTo(this.canvas.width / 2, 0)
         this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
-        this.ctx.strokeStyle = '#ff00ff'
+        this.ctx.strokeStyle = '#155dfc'
         this.ctx.stroke()
         this.ctx.setLineDash([])
 
