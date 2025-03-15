@@ -16,13 +16,7 @@ export class ParticleSystem {
     constructor(context: CanvasRenderingContext2D) {
         this.ctx = context
         this.particles = []
-        this.colors = [
-            'hsl(120, 100%, 50%)', // Bright Green
-            'hsl(180, 100%, 50%)', // Cyan
-            'hsl(240, 100%, 50%)', // Blue
-            'hsl(280, 100%, 50%)', // Purple
-            'hsl(300, 100%, 50%)' // Magenta
-        ]
+        this.colors = ['oklch(0.685 0.169 237.323)', 'oklch(0.623 0.214 259.815)', 'oklch(0.546 0.245 262.881)']
     }
 
     createParticle(x: number, y: number, dx: number, dy: number, isExplosion = false): Particle {
@@ -37,7 +31,7 @@ export class ParticleSystem {
         }
     }
 
-    createExplosion(x: number, y: number, particleCount = 50) {
+    createExplosion(x: number, y: number, particleCount = 60) {
         for (let i = 0; i < particleCount; i++) {
             this.particles.push(this.createParticle(x, y, 0, 0, true))
         }
