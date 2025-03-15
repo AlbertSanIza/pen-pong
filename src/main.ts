@@ -83,14 +83,12 @@ export class PongGame {
     }
 
     startGame() {
-        if (!this.gameStarted) {
-            this.gameStarted = true
-            this.stateButton.innerHTML = 'Reset'
+        this.gameStarted = !this.gameStarted
+        this.stateButton.innerHTML = this.gameStarted ? 'RESET' : 'START'
+        if (this.gameStarted) {
             // audioManager.init()
             this.gameLoop()
         } else {
-            this.gameStarted = false
-            this.stateButton.innerHTML = 'Start'
             this.initialize()
             this.draw()
         }
