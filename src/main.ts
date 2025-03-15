@@ -16,6 +16,7 @@ export class PongGame {
     gameStarted: boolean = false
     playerPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
     aiPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
+    ball: { x: number; y: number; speed: number; dx: number; dy: number } = { x: 0, y: 0, speed: 0, dx: 0, dy: 0 }
 
     constructor() {
         this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
@@ -51,7 +52,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: 5,
+            speed: 6,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
