@@ -25,7 +25,6 @@ export class PongGame {
         this.playerScoreElement = document.getElementById('score-a') as HTMLElement
         this.aiScoreElement = document.getElementById('score-b') as HTMLElement
         this.resize()
-        window.addEventListener('resize', () => this.resize())
         this.paddleHeight = this.canvas.height * 0.2
         this.paddleWidth = 24
         this.particles = new ParticleSystem(this.ctx)
@@ -67,6 +66,7 @@ export class PongGame {
     }
 
     setupEventListeners() {
+        window.addEventListener('resize', () => this.resize())
         this.stateButton.addEventListener('click', () => this.startGame())
         this.canvas.addEventListener('touchmove', (e) => {
             e.preventDefault()
