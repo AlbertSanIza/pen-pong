@@ -34,9 +34,9 @@ export class PongGame {
     }
 
     initialize() {
+        this.gameStarted = false
         this.playerScore = 0
         this.aiScore = 0
-        this.gameStarted = false
         this.playerPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
             speed: 0
@@ -131,6 +131,7 @@ export class PongGame {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScore++
             this.playerScoreElement.textContent = `${this.playerScore}`
+            this.aiPaddle.speed += 0.1
             // audioManager.playScore()
             this.resetBall()
         }
