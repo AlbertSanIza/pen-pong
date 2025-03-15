@@ -4,7 +4,7 @@ import './style.css'
 export class PongGame {
     canvas: HTMLCanvasElement
     ctx: CanvasRenderingContext2D
-    startButton: HTMLElement
+    stateButton: HTMLElement
     playerScoreElement: HTMLElement
     aiScoreElement: HTMLElement
     paddleHeight: number
@@ -21,7 +21,7 @@ export class PongGame {
     constructor() {
         this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
         this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
-        this.startButton = document.getElementById('startButton') as HTMLElement
+        this.stateButton = document.getElementById('stateButton') as HTMLElement
         this.playerScoreElement = document.getElementById('playerScore') as HTMLElement
         this.aiScoreElement = document.getElementById('aiScore') as HTMLElement
         this.resize()
@@ -67,7 +67,7 @@ export class PongGame {
     }
 
     setupEventListeners() {
-        this.startButton.addEventListener('click', () => this.startGame())
+        this.stateButton.addEventListener('click', () => this.startGame())
         this.canvas.addEventListener('touchmove', (e) => {
             e.preventDefault()
             const touch = e.touches[0]
@@ -85,12 +85,12 @@ export class PongGame {
     startGame() {
         if (!this.gameStarted) {
             this.gameStarted = true
-            this.startButton.innerHTML = 'Reset'
+            this.stateButton.innerHTML = 'Reset'
             // audioManager.init()
             this.gameLoop()
         } else {
             this.gameStarted = false
-            this.startButton.innerHTML = 'Start'
+            this.stateButton.innerHTML = 'Start'
             this.initialize()
             this.draw()
         }
