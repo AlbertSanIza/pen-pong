@@ -9,7 +9,7 @@ export class PongGame {
     aiScoreElement: HTMLElement
     paddleHeight: number
     paddleWidth: number
-    ballSize: number = 10
+    ballSize: number = 14
     particles: ParticleSystem
     playerScore: number = 0
     aiScore: number = 0
@@ -84,7 +84,7 @@ export class PongGame {
     startGame() {
         if (!this.gameStarted) {
             this.gameStarted = true
-            this.startButton.innerHTML = 'Restart'
+            this.startButton.innerHTML = 'Reset'
             // audioManager.init()
             this.gameLoop()
         } else {
@@ -154,8 +154,7 @@ export class PongGame {
 
     draw() {
         // Clear canvas
-        this.ctx.fillStyle = '#eff6ff'
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         // Draw center line
         this.ctx.setLineDash([5, 3])
@@ -167,7 +166,7 @@ export class PongGame {
         this.ctx.setLineDash([])
 
         // Draw paddles
-        this.ctx.fillStyle = '#1447e6'
+        this.ctx.fillStyle = '#155dfc'
         this.ctx.fillRect(0, this.playerPaddle.y, this.paddleWidth, this.paddleHeight)
         this.ctx.fillRect(this.canvas.width - this.paddleWidth, this.aiPaddle.y, this.paddleWidth, this.paddleHeight)
 
@@ -176,11 +175,11 @@ export class PongGame {
 
         // Draw ball with glow effect
         this.ctx.save()
-        this.ctx.shadowBlur = 30
-        this.ctx.shadowColor = '#1447e6'
+        this.ctx.shadowBlur = 50
+        this.ctx.shadowColor = '#155dfc'
         this.ctx.beginPath()
         this.ctx.arc(this.ball.x, this.ball.y, this.ballSize, 0, Math.PI * 2)
-        this.ctx.fillStyle = '#1447e6'
+        this.ctx.fillStyle = '#155dfc'
         this.ctx.fill()
         this.ctx.closePath()
         this.ctx.restore()
