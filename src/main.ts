@@ -3,28 +3,26 @@ import './style.css'
 
 export class PongGame {
     canvas: HTMLCanvasElement
-    ctx: CanvasRenderingContext2D | null
-    startButton: HTMLElement | null
-    playerScoreElement: HTMLElement | null
-    aiScoreElement: HTMLElement | null
+    ctx: CanvasRenderingContext2D
+    startButton: HTMLElement
+    playerScoreElement: HTMLElement
+    aiScoreElement: HTMLElement
     paddleHeight: number
     paddleWidth: number
     ballSize: number
+    particles: ParticleSystem
 
     constructor() {
         this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
-        this.ctx = this.canvas.getContext('2d')
-        this.startButton = document.getElementById('startButton')
-        this.playerScoreElement = document.getElementById('playerScore')
-        this.aiScoreElement = document.getElementById('aiScore')
-
+        this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
+        this.startButton = document.getElementById('startButton') as HTMLElement
+        this.playerScoreElement = document.getElementById('playerScore') as HTMLElement
+        this.aiScoreElement = document.getElementById('aiScore') as HTMLElement
         this.resize()
         window.addEventListener('resize', () => this.resize())
-
         this.paddleHeight = this.canvas.height * 0.2
-        this.paddleWidth = 12
+        this.paddleWidth = 20
         this.ballSize = 10
-
         this.particles = new ParticleSystem(this.ctx)
         this.initialize()
         this.setupEventListeners()
@@ -65,6 +63,7 @@ export class PongGame {
         const { width, height } = (document.getElementById('gameCanvas') as HTMLCanvasElement).getBoundingClientRect()
         this.canvas.width = width
         this.canvas.height = height
+        this.paddleHeight = this.canvas.height * 0.2
     }
 
     setupEventListeners() {
