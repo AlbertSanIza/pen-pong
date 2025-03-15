@@ -5,15 +5,15 @@ export class PongGame {
     canvas: HTMLCanvasElement
     ctx: CanvasRenderingContext2D
     stateButton: HTMLElement
+    gameStarted: boolean = false
     playerScoreElement: HTMLElement
+    playerScore: number = 0
     aiScoreElement: HTMLElement
+    aiScore: number = 0
+    ballSize: number = 14
     paddleHeight: number
     paddleWidth: number
-    ballSize: number = 14
     particles: ParticleSystem
-    playerScore: number = 0
-    aiScore: number = 0
-    gameStarted: boolean = false
     playerPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
     aiPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
     ball: { x: number; y: number; speed: number; dx: number; dy: number } = { x: 0, y: 0, speed: 0, dx: 0, dy: 0 }
@@ -45,6 +45,7 @@ export class PongGame {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
             speed: 1
         }
+        this.particles = new ParticleSystem(this.ctx)
         this.resetBall()
     }
 
