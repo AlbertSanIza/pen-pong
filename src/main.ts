@@ -9,8 +9,13 @@ export class PongGame {
     aiScoreElement: HTMLElement
     paddleHeight: number
     paddleWidth: number
-    ballSize: number
+    ballSize: number = 10
     particles: ParticleSystem
+    playerScore: number = 0
+    aiScore: number = 0
+    gameStarted: boolean = false
+    playerPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
+    aiPaddle: { y: number; speed: number } = { y: 0, speed: 0 }
 
     constructor() {
         this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement
@@ -22,7 +27,6 @@ export class PongGame {
         window.addEventListener('resize', () => this.resize())
         this.paddleHeight = this.canvas.height * 0.2
         this.paddleWidth = 20
-        this.ballSize = 10
         this.particles = new ParticleSystem(this.ctx)
         this.initialize()
         this.setupEventListeners()
@@ -32,20 +36,14 @@ export class PongGame {
         this.playerScore = 0
         this.aiScore = 0
         this.gameStarted = false
-
-        // Player paddle
         this.playerPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
             speed: 0
         }
-
-        // AI paddle
         this.aiPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
-            speed: 5
+            speed: 1
         }
-
-        // Ball
         this.resetBall()
     }
 
