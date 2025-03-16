@@ -27,6 +27,7 @@ export class PongGame {
         this.canvas.width = width
         this.canvas.height = height
         this.resetPaddleHeight()
+        this.drawCenterLine()
     }
 
     resetPaddleHeight() {
@@ -47,7 +48,6 @@ export class PongGame {
             speed: 2
         }
         this.resetBall()
-        this.drawCenterLine()
     }
 
     resetBall() {
