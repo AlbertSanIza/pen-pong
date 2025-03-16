@@ -108,8 +108,6 @@ export class PongGame {
         for (let i = 0; i < 3; i++) {
             this.particles.particles.push(this.particles.createParticle(this.ball.x, this.ball.y, -this.ball.dx, -this.ball.dy))
         }
-
-        // Update particles
         this.particles.update()
 
         // Ball collision with top and bottom walls
