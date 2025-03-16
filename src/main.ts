@@ -16,10 +16,9 @@ export class PongGame {
     playerPaddle!: { y: number; speed: number }
     aiPaddle!: { y: number; speed: number }
     ball!: { x: number; y: number; speed: number; dx: number; dy: number }
-    ballSize: number = 14
-    ballHitRadius: number = this.ballSize - this.ballSize / 5
+    ballRadius: number = 14
     soundSystem: SoundSystem = new SoundSystem()
-    autoPlay: boolean = true
+    autoPlay: boolean = false
 
     constructor() {
         this.resize()
@@ -70,7 +69,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: this.autoPlay ? 0.5 : 9,
+            speed: this.autoPlay ? 18 : 0.5,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
@@ -126,28 +125,24 @@ export class PongGame {
         this.particles.update()
 
         // Ball collision with top and bottom walls
-        if (this.ball.y - this.ballHitRadius <= 0) {
+        if (this.ball.y - this.ballRadius <= 0) {
             this.ball.dy = Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
-        if (this.ball.y + this.ballHitRadius >= this.canvas.height) {
+        if (this.ball.y + this.ballRadius >= this.canvas.height) {
             this.ball.dy = -Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
 
         // Ball collision with paddles
-        if (
-            this.ball.x - this.ballHitRadius <= this.paddleWidth &&
-            this.ball.y >= this.playerPaddle.y &&
-            this.ball.y <= this.playerPaddle.y + this.paddleHeight
-        ) {
+        if (this.ball.x - this.ballRadius <= this.paddleWidth && this.ball.y >= this.playerPaddle.y && this.ball.y <= this.playerPaddle.y + this.paddleHeight) {
             this.ball.dx *= -1
             this.ball.dy += ((this.ball.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
             this.soundSystem.paddleHit()
         }
 
         if (
-            this.ball.x + this.ballHitRadius >= this.canvas.width - this.paddleWidth &&
+            this.ball.x + this.ballRadius >= this.canvas.width - this.paddleWidth &&
             this.ball.y >= this.aiPaddle.y &&
             this.ball.y <= this.aiPaddle.y + this.paddleHeight
         ) {
@@ -217,7 +212,7 @@ export class PongGame {
         this.ctx.shadowBlur = 50
         this.ctx.shadowColor = '#155dfc'
         this.ctx.beginPath()
-        this.ctx.arc(this.ball.x, this.ball.y, this.ballSize, 0, Math.PI * 2)
+        this.ctx.arc(this.ball.x, this.ball.y, this.ballRadius, 0, Math.PI * 2)
         this.ctx.fillStyle = '#155dfc'
         this.ctx.fill()
         this.ctx.closePath()
