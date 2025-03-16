@@ -10,8 +10,6 @@ export class PongGame {
     paddleWidth: number
     paddleHeight: number
     gameStarted!: boolean
-    playerScore!: number
-    aiScore!: number
     particles!: ParticleSystem
     playerPaddle!: { y: number; speed: number }
     aiPaddle!: { y: number; speed: number }
@@ -33,8 +31,8 @@ export class PongGame {
 
     initialize() {
         this.gameStarted = false
-        this.playerScore = 0
-        this.aiScore = 0
+        this.playerScoreElement.textContent = '0'
+        this.aiScoreElement.textContent = '0'
         this.particles = new ParticleSystem(this.ctx)
         this.playerPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
@@ -129,16 +127,14 @@ export class PongGame {
         // Scoring and explosions
         if (this.ball.x >= this.canvas.width) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
-            this.playerScore++
-            this.playerScoreElement.textContent = `${this.playerScore}`
+            this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
             this.aiPaddle.speed += 0.15
             // audioManager.playScore()
             this.resetBall()
         }
         if (this.ball.x <= 0) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
-            this.aiScore++
-            this.aiScoreElement.textContent = `${this.aiScore}`
+            this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
             // audioManager.playScore()
             this.resetBall()
         }
