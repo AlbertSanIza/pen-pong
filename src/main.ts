@@ -21,21 +21,13 @@ export class PongGame {
     autoPlay: boolean = false
 
     constructor() {
-        this.resize()
         this.init()
         this.setupEventListeners()
         this.soundSystem.init()
-        this.draw()
-    }
-
-    resize() {
-        const { width, height } = this.canvas.getBoundingClientRect()
-        this.canvas.width = width
-        this.canvas.height = height
-        this.paddleHeight = Math.max(120, height * 0.2)
     }
 
     init() {
+        this.resize()
         this.gameStarted = false
         this.playerScoreElement.textContent = '0'
         this.aiScoreElement.textContent = '0'
@@ -49,6 +41,14 @@ export class PongGame {
             speed: 2
         }
         this.resetBall()
+        this.draw()
+    }
+
+    resize() {
+        const { width, height } = this.canvas.getBoundingClientRect()
+        this.canvas.width = width
+        this.canvas.height = height
+        this.paddleHeight = Math.max(120, height * 0.2)
     }
 
     resetBall() {
