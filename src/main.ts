@@ -5,7 +5,8 @@ import './style.css'
 export class PongGame {
     canvas: HTMLCanvasElement = document.getElementById('game') as HTMLCanvasElement
     ctx: CanvasRenderingContext2D = this.canvas.getContext('2d') as CanvasRenderingContext2D
-    stateButton: HTMLElement = document.getElementById('state') as HTMLElement
+    stateStartButton: HTMLElement = document.getElementById('state-start') as HTMLElement
+    stateResetButton: HTMLElement = document.getElementById('state-reset') as HTMLElement
     playerScoreElement: HTMLElement = document.getElementById('score-a') as HTMLElement
     aiScoreElement: HTMLElement = document.getElementById('score-b') as HTMLElement
     paddleWidth: number = 30
@@ -75,7 +76,8 @@ export class PongGame {
 
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
-        this.stateButton.addEventListener('click', () => this.startGame())
+        this.stateStartButton.addEventListener('click', () => this.startGame())
+        this.stateResetButton.addEventListener('click', () => this.startGame())
         this.canvas.addEventListener('touchmove', (event) => {
             event.preventDefault()
             const touch = event.touches[0]
@@ -92,10 +94,13 @@ export class PongGame {
 
     startGame() {
         this.gameStarted = !this.gameStarted
-        this.stateButton.innerHTML = this.gameStarted ? 'RESET' : 'START'
         if (this.gameStarted) {
+            this.stateStartButton.classList.add('hidden')
+            this.stateResetButton.classList.remove('hidden')
             this.gameLoop()
         } else {
+            this.stateStartButton.classList.remove('hidden')
+            this.stateResetButton.classList.add('hidden')
             this.initialize()
             this.draw()
         }
