@@ -18,7 +18,7 @@ export class PongGame {
     ball!: { x: number; y: number; speed: number; dx: number; dy: number }
     ballSize: number = 14
     soundSystem: SoundSystem = new SoundSystem()
-    autoPlay: boolean = false
+    autoPlay: boolean = true
 
     constructor() {
         this.resize()
@@ -69,7 +69,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: 8,
+            speed: this.autoPlay ? 18 : 9,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
