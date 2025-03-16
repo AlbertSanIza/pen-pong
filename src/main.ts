@@ -144,7 +144,7 @@ export class PongGame {
         if (this.ball.x >= this.canvas.width) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
-            this.aiPaddle.speed += 0.15
+            this.aiPaddle.speed += 0.2
             this.soundSystem.score()
             this.resetBall()
         }
