@@ -25,28 +25,14 @@ export class PongGame {
         this.initialize()
         this.setupEventListeners()
         this.soundSystem.init()
+        this.draw()
     }
 
     resize() {
         const { width, height } = this.canvas.getBoundingClientRect()
         this.canvas.width = width
         this.canvas.height = height
-        this.resetPaddleHeight()
-        this.drawCenterLine()
-    }
-
-    resetPaddleHeight() {
-        this.paddleHeight = Math.max(120, this.canvas.height * 0.2)
-    }
-
-    drawCenterLine() {
-        this.ctx.setLineDash([5, 3])
-        this.ctx.beginPath()
-        this.ctx.moveTo(this.canvas.width / 2, 0)
-        this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
-        this.ctx.strokeStyle = 'oklch(0.623 0.214 259.815)'
-        this.ctx.stroke()
-        this.ctx.setLineDash([])
+        this.paddleHeight = Math.max(120, height * 0.2)
     }
 
     initialize() {
@@ -202,7 +188,13 @@ export class PongGame {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         // Draw center line
-        this.drawCenterLine()
+        this.ctx.setLineDash([5, 3])
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.canvas.width / 2, 0)
+        this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
+        this.ctx.strokeStyle = 'oklch(0.623 0.214 259.815)'
+        this.ctx.stroke()
+        this.ctx.setLineDash([])
 
         // Draw paddles
         this.ctx.fillStyle = '#155dfc'
