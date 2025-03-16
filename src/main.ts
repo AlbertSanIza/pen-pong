@@ -3,22 +3,26 @@ import { SoundSystem } from './sound-system'
 import './style.css'
 
 export class PongGame {
-    canvas: HTMLCanvasElement = document.getElementById('game') as HTMLCanvasElement
+    canvas: HTMLCanvasElement = document.getElementById('game-canvas') as HTMLCanvasElement
     ctx: CanvasRenderingContext2D = this.canvas.getContext('2d') as CanvasRenderingContext2D
-    stateStartButton: HTMLElement = document.getElementById('state-start') as HTMLElement
-    stateResetButton: HTMLElement = document.getElementById('state-reset') as HTMLElement
-    playerScoreElement: HTMLElement = document.getElementById('score-a') as HTMLElement
-    aiScoreElement: HTMLElement = document.getElementById('score-b') as HTMLElement
-    paddleWidth: number = 30
+    stateElement: HTMLElement = document.getElementById('state') as HTMLElement
+    pausedIndicatorElement: HTMLElement = document.getElementById('paused-indicator') as HTMLElement
+    stateButton: HTMLElement = document.getElementById('state-button') as HTMLElement
+    soundSystem: SoundSystem = new SoundSystem()
     paddleHeight!: number
     gameStarted!: boolean
-    particles!: ParticleSystem
+    gamePaused!: boolean
+    gameOver!: boolean
+    playerScoreElement: HTMLElement = document.getElementById('score-a') as HTMLElement
+    aiScoreElement: HTMLElement = document.getElementById('score-b') as HTMLElement
     playerPaddle!: { y: number; speed: number }
     aiPaddle!: { y: number; speed: number }
     ball!: { x: number; y: number; speed: number; dx: number; dy: number }
-    ballRadius: number = 14
-    soundSystem: SoundSystem = new SoundSystem()
     autoPlay: boolean = false
+    particles!: ParticleSystem
+    resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
+    paddleWidth: number = 30
+    ballRadius: number = 14
 
     constructor() {
         this.init()
@@ -29,9 +33,10 @@ export class PongGame {
     init() {
         this.resize()
         this.gameStarted = false
+        this.gamePaused = false
+        this.gameOver = false
         this.playerScoreElement.textContent = '0'
         this.aiScoreElement.textContent = '0'
-        this.particles = new ParticleSystem(this.ctx)
         this.playerPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
             speed: 2
@@ -41,6 +46,7 @@ export class PongGame {
             speed: 2
         }
         this.resetBall()
+        this.particles = new ParticleSystem(this.ctx)
         this.draw()
     }
 
@@ -63,8 +69,13 @@ export class PongGame {
 
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
-        this.stateStartButton.addEventListener('click', () => this.startGame())
-        this.stateResetButton.addEventListener('click', () => this.startGame())
+        window.addEventListener('keydown', (event) => {
+            if (this.gameStarted && event.key === 'Escape') {
+                this.pauseGame()
+            }
+        })
+        this.stateButton.addEventListener('click', () => this.startGame())
+        this.resetButton.addEventListener('click', () => this.resetGame())
         this.canvas.addEventListener('touchmove', (event) => {
             if (this.autoPlay) {
                 return
@@ -86,16 +97,33 @@ export class PongGame {
     }
 
     startGame() {
-        this.gameStarted = !this.gameStarted
-        if (this.gameStarted) {
-            this.stateStartButton.classList.add('hidden')
-            this.stateResetButton.classList.remove('hidden')
-            this.gameLoop()
+        this.gameStarted = true
+        this.gamePaused = false
+        this.gameOver = false
+        this.pausedIndicatorElement.classList.add('hidden')
+        this.stateButton.textContent = 'Start'
+        this.stateElement.classList.add('hidden')
+        this.resetButton.classList.remove('hidden')
+        this.gameLoop()
+    }
+
+    resetGame() {
+        this.pausedIndicatorElement.classList.add('hidden')
+        this.stateButton.textContent = 'Start'
+        this.stateElement.classList.remove('hidden')
+        this.resetButton.classList.add('hidden')
+        this.init()
+    }
+
+    pauseGame() {
+        this.gamePaused = !this.gamePaused
+        if (this.gamePaused) {
+            this.pausedIndicatorElement.classList.remove('hidden')
+            this.stateButton.textContent = 'Resume'
+            this.stateElement.classList.remove('hidden')
+            // this.resetButton.classList.add('hidden')
         } else {
-            this.stateStartButton.classList.remove('hidden')
-            this.stateResetButton.classList.add('hidden')
-            this.init()
-            this.draw()
+            this.startGame()
         }
     }
 
@@ -217,7 +245,7 @@ export class PongGame {
     }
 
     gameLoop() {
-        if (this.gameStarted) {
+        if (this.gameStarted && !this.gamePaused && !this.gameOver) {
             this.update()
             this.draw()
             requestAnimationFrame(() => this.gameLoop())
