@@ -43,7 +43,7 @@ export class PongGame {
         this.ctx.beginPath()
         this.ctx.moveTo(this.canvas.width / 2, 0)
         this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
-        this.ctx.strokeStyle = '#155dfc'
+        this.ctx.strokeStyle = 'oklch(0.623 0.214 259.815)'
         this.ctx.stroke()
         this.ctx.setLineDash([])
     }
