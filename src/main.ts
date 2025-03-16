@@ -34,6 +34,16 @@ export class PongGame {
         this.paddleHeight = Math.max(120, this.canvas.height * 0.2)
     }
 
+    drawCenterLine() {
+        this.ctx.setLineDash([5, 3])
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.canvas.width / 2, 0)
+        this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
+        this.ctx.strokeStyle = '#155dfc'
+        this.ctx.stroke()
+        this.ctx.setLineDash([])
+    }
+
     initialize() {
         this.gameStarted = false
         this.playerScoreElement.textContent = '0'
@@ -63,16 +73,16 @@ export class PongGame {
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
         this.stateButton.addEventListener('click', () => this.startGame())
-        this.canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault()
-            const touch = e.touches[0]
+        this.canvas.addEventListener('touchmove', (event) => {
+            event.preventDefault()
+            const touch = event.touches[0]
             const rect = this.canvas.getBoundingClientRect()
             const relativeY = touch.clientY - rect.top
             this.playerPaddle.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
         })
-        this.canvas.addEventListener('mousemove', (e) => {
+        this.canvas.addEventListener('mousemove', (event) => {
             const rect = this.canvas.getBoundingClientRect()
-            const relativeY = e.clientY - rect.top
+            const relativeY = event.clientY - rect.top
             this.playerPaddle.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
         })
     }
@@ -143,16 +153,6 @@ export class PongGame {
         } else if (this.ball.y < aiCenter - 10) {
             this.aiPaddle.y = Math.max(this.aiPaddle.y - this.aiPaddle.speed, 0)
         }
-    }
-
-    drawCenterLine() {
-        this.ctx.setLineDash([5, 3])
-        this.ctx.beginPath()
-        this.ctx.moveTo(this.canvas.width / 2, 0)
-        this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
-        this.ctx.strokeStyle = '#155dfc'
-        this.ctx.stroke()
-        this.ctx.setLineDash([])
     }
 
     draw() {
