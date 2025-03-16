@@ -8,7 +8,7 @@ export class PongGame {
     playerScoreElement: HTMLElement = document.getElementById('score-a') as HTMLElement
     aiScoreElement: HTMLElement = document.getElementById('score-b') as HTMLElement
     paddleWidth: number = 30
-    paddleHeight: number
+    paddleHeight!: number
     gameStarted!: boolean
     particles!: ParticleSystem
     playerPaddle!: { y: number; speed: number }
@@ -18,7 +18,7 @@ export class PongGame {
 
     constructor() {
         this.resize()
-        this.paddleHeight = this.canvas.height * 0.2
+        this.resetPaddleHeight()
         this.initialize()
         this.setupEventListeners()
     }
@@ -50,11 +50,15 @@ export class PongGame {
         }
     }
 
+    resetPaddleHeight() {
+        this.paddleHeight = Math.max(100, this.canvas.height * 0.2)
+    }
+
     resize() {
         const { width, height } = this.canvas.getBoundingClientRect()
         this.canvas.width = width
         this.canvas.height = height
-        this.paddleHeight = this.canvas.height * 0.2
+        this.resetPaddleHeight()
     }
 
     setupEventListeners() {
