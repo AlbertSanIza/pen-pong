@@ -18,9 +18,19 @@ export class PongGame {
 
     constructor() {
         this.resize()
-        this.resetPaddleHeight()
         this.initialize()
         this.setupEventListeners()
+    }
+
+    resize() {
+        const { width, height } = this.canvas.getBoundingClientRect()
+        this.canvas.width = width
+        this.canvas.height = height
+        this.resetPaddleHeight()
+    }
+
+    resetPaddleHeight() {
+        this.paddleHeight = Math.max(120, this.canvas.height * 0.2)
     }
 
     initialize() {
@@ -48,17 +58,6 @@ export class PongGame {
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
-    }
-
-    resetPaddleHeight() {
-        this.paddleHeight = Math.max(120, this.canvas.height * 0.2)
-    }
-
-    resize() {
-        const { width, height } = this.canvas.getBoundingClientRect()
-        this.canvas.width = width
-        this.canvas.height = height
-        this.resetPaddleHeight()
     }
 
     setupEventListeners() {
