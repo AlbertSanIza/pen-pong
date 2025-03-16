@@ -1,4 +1,5 @@
 import { ParticleSystem } from './particle-system'
+import { SoundSystem } from './sound-system'
 import './style.css'
 
 export class PongGame {
@@ -15,11 +16,13 @@ export class PongGame {
     aiPaddle!: { y: number; speed: number }
     ball!: { x: number; y: number; speed: number; dx: number; dy: number }
     ballSize: number = 14
+    soundSystem: SoundSystem = new SoundSystem()
 
     constructor() {
         this.resize()
         this.initialize()
         this.setupEventListeners()
+        this.soundSystem.init()
     }
 
     resize() {
@@ -91,7 +94,6 @@ export class PongGame {
         this.gameStarted = !this.gameStarted
         this.stateButton.innerHTML = this.gameStarted ? 'RESET' : 'START'
         if (this.gameStarted) {
-            // audioManager.init()
             this.gameLoop()
         } else {
             this.initialize()
@@ -113,20 +115,20 @@ export class PongGame {
         // Ball collision with top and bottom walls
         if (this.ball.y - this.ballSize <= 0 || this.ball.y + this.ballSize >= this.canvas.height) {
             this.ball.dy *= -1
-            // audioManager.playWallHit()
+            this.soundSystem.wallHit()
         }
 
         // Ball collision with paddles
         if (this.ball.x <= this.paddleWidth && this.ball.y >= this.playerPaddle.y && this.ball.y <= this.playerPaddle.y + this.paddleHeight) {
             this.ball.dx *= -1
             this.ball.dy += ((this.ball.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
-            // audioManager.playPaddleHit()
+            this.soundSystem.paddleHit()
         }
 
         if (this.ball.x >= this.canvas.width - this.paddleWidth && this.ball.y >= this.aiPaddle.y && this.ball.y <= this.aiPaddle.y + this.paddleHeight) {
             this.ball.dx *= -1
             this.ball.dy += ((this.ball.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
-            // audioManager.playPaddleHit()
+            this.soundSystem.paddleHit()
         }
 
         // Scoring and explosions
@@ -134,13 +136,13 @@ export class PongGame {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
             this.aiPaddle.speed += 0.15
-            // audioManager.playScore()
+            this.soundSystem.score()
             this.resetBall()
         }
         if (this.ball.x <= 0) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
-            // audioManager.playScore()
+            this.soundSystem.score()
             this.resetBall()
         }
 
