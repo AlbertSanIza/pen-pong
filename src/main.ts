@@ -69,7 +69,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: this.autoPlay ? 18 : 0.25,
+            speed: this.autoPlay ? 18 : 0.1,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
@@ -125,25 +125,29 @@ export class PongGame {
         // this.particles.update()
 
         // Top collision
-        if (this.ball.y - this.ballRadius + 2 <= 0) {
+        if (this.ball.y - this.ballRadius + 1 <= 0) {
             this.ball.dy = Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
         // Bottom collision
-        if (this.ball.y + this.ballRadius - 2 >= this.canvas.height) {
+        if (this.ball.y + this.ballRadius - 1 >= this.canvas.height) {
             this.ball.dy = -Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
 
         // Ball collision with paddles
-        if (this.ball.x - this.ballRadius <= this.paddleWidth && this.ball.y >= this.playerPaddle.y && this.ball.y <= this.playerPaddle.y + this.paddleHeight) {
+        if (
+            this.ball.x - this.ballRadius + 1 <= this.paddleWidth &&
+            this.ball.y >= this.playerPaddle.y &&
+            this.ball.y <= this.playerPaddle.y + this.paddleHeight
+        ) {
             this.ball.dx *= -1
             this.ball.dy += ((this.ball.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
             this.soundSystem.paddleHit()
         }
 
         if (
-            this.ball.x + this.ballRadius >= this.canvas.width - this.paddleWidth &&
+            this.ball.x + this.ballRadius - 1 >= this.canvas.width - this.paddleWidth &&
             this.ball.y >= this.aiPaddle.y &&
             this.ball.y <= this.aiPaddle.y + this.paddleHeight
         ) {
