@@ -14,16 +14,24 @@
             <div class="flex h-16 w-full items-center justify-between border-b-2 border-dashed px-3 lg:h-24 lg:px-6">
                 <h1 class="text-2xl lg:text-4xl">PEN PONG</h1>
                 <button
-                    id="state"
-                    class="rounded-xl border-2 border-dashed px-4 py-2 hover:cursor-pointer hover:bg-blue-100 lg:text-2xl dark:hover:bg-blue-950"
+                    id="state-reset"
+                    class="hidden rounded-xl border-2 border-dashed px-4 py-2 hover:cursor-pointer hover:bg-blue-100 lg:text-2xl dark:hover:bg-blue-950"
                 >
-                    START
+                    RESET
                 </button>
             </div>
             <div class="relative flex-1 overflow-hidden border-b-2 border-dashed">
                 <div class="pointer-events-none absolute top-0 grid w-full grid-cols-2 p-6 text-center text-5xl lg:text-8xl">
                     <div id="score-a">0</div>
                     <div id="score-b">0</div>
+                </div>
+                <div class="pointer-events-none absolute flex size-full items-center justify-center">
+                    <button
+                        id="state-start"
+                        class="pointer-events-auto rounded-xl border-2 border-dashed bg-slate-100 px-4 py-2 hover:cursor-pointer hover:bg-blue-100 lg:text-2xl dark:hover:bg-blue-950"
+                    >
+                        START
+                    </button>
                 </div>
                 <canvas id="game" class="size-full"></canvas>
             </div>
