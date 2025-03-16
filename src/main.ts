@@ -116,7 +116,8 @@ export class PongGame {
         if (this.ball.y - this.ballSize <= 0) {
             this.ball.dy = Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
-        } else if (this.ball.y + this.ballSize >= this.canvas.height) {
+        }
+        if (this.ball.y + this.ballSize >= this.canvas.height) {
             this.ball.dy = -Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
