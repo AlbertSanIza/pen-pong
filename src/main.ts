@@ -69,7 +69,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: this.autoPlay ? 18 : 0.5,
+            speed: this.autoPlay ? 18 : 0.25,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
@@ -119,17 +119,18 @@ export class PongGame {
         this.ball.y += this.ball.dy * this.ball.speed
 
         // Add fire particles
-        for (let i = 0; i < 3; i++) {
-            this.particles.particles.push(this.particles.createParticle(this.ball.x, this.ball.y, -this.ball.dx, -this.ball.dy))
-        }
-        this.particles.update()
+        // for (let i = 0; i < 3; i++) {
+        //     this.particles.particles.push(this.particles.createParticle(this.ball.x, this.ball.y, -this.ball.dx, -this.ball.dy))
+        // }
+        // this.particles.update()
 
-        // Ball collision with top and bottom walls
-        if (this.ball.y - this.ballRadius <= 0) {
+        // Top collision
+        if (this.ball.y - this.ballRadius + 2 <= 0) {
             this.ball.dy = Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
-        if (this.ball.y + this.ballRadius >= this.canvas.height) {
+        // Bottom collision
+        if (this.ball.y + this.ballRadius - 2 >= this.canvas.height) {
             this.ball.dy = -Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
