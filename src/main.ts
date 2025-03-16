@@ -22,7 +22,7 @@ export class PongGame {
 
     constructor() {
         this.resize()
-        this.initialize()
+        this.init()
         this.setupEventListeners()
         this.soundSystem.init()
         this.draw()
@@ -35,7 +35,7 @@ export class PongGame {
         this.paddleHeight = Math.max(120, height * 0.2)
     }
 
-    initialize() {
+    init() {
         this.gameStarted = false
         this.playerScoreElement.textContent = '0'
         this.aiScoreElement.textContent = '0'
@@ -94,7 +94,7 @@ export class PongGame {
         } else {
             this.stateStartButton.classList.remove('hidden')
             this.stateResetButton.classList.add('hidden')
-            this.initialize()
+            this.init()
             this.draw()
         }
     }
