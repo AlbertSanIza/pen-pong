@@ -118,11 +118,10 @@ export class PongGame {
         this.ball.x += this.ball.dx * this.ball.speed
         this.ball.y += this.ball.dy * this.ball.speed
 
-        // Add fire particles
-        // for (let i = 0; i < 3; i++) {
-        //     this.particles.particles.push(this.particles.createParticle(this.ball.x, this.ball.y, -this.ball.dx, -this.ball.dy))
-        // }
-        // this.particles.update()
+        for (let i = 0; i < 3; i++) {
+            this.particles.particles.push(this.particles.createParticle(this.ball.x, this.ball.y, -this.ball.dx, -this.ball.dy))
+        }
+        this.particles.update()
 
         // Top collision
         if (this.ball.y - this.ballRadius + 1 <= 0) {
