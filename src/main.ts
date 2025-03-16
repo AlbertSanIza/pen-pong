@@ -113,8 +113,11 @@ export class PongGame {
         this.particles.update()
 
         // Ball collision with top and bottom walls
-        if (this.ball.y - this.ballSize <= 0 || this.ball.y + this.ballSize >= this.canvas.height) {
-            this.ball.dy *= -1
+        if (this.ball.y - this.ballSize <= 0) {
+            this.ball.dy = Math.abs(this.ball.dy)
+            this.soundSystem.wallHit()
+        } else if (this.ball.y + this.ballSize >= this.canvas.height) {
+            this.ball.dy = -Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
 
