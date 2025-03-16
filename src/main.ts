@@ -134,7 +134,7 @@ export class PongGame {
             this.soundSystem.wallHit()
         }
 
-        // Ball collision with paddles
+        // Left paddle collision
         if (
             this.ball.x - this.ballRadius + 1 <= this.paddleWidth &&
             this.ball.y >= this.playerPaddle.y &&
@@ -145,6 +145,7 @@ export class PongGame {
             this.soundSystem.paddleHit()
         }
 
+        // Right paddle collision
         if (
             this.ball.x + this.ballRadius - 1 >= this.canvas.width - this.paddleWidth &&
             this.ball.y >= this.aiPaddle.y &&
