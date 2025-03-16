@@ -151,6 +151,7 @@ export class PongGame {
         if (this.ball.x <= 0) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
+            this.aiPaddle.speed += 0.1
             this.soundSystem.score()
             this.resetBall()
         }
