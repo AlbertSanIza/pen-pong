@@ -51,7 +51,7 @@ export class PongGame {
     }
 
     resetPaddleHeight() {
-        this.paddleHeight = Math.max(100, this.canvas.height * 0.2)
+        this.paddleHeight = Math.max(120, this.canvas.height * 0.2)
     }
 
     resize() {
