@@ -27,4 +27,20 @@ export class SoundSystem {
     score() {
         this.synth.triggerAttackRelease('E4', '8n')
     }
+
+    pause() {
+        this.synth.triggerAttackRelease('A4', '8n')
+    }
+
+    unpause() {
+        this.synth.triggerAttackRelease('B4', '8n')
+    }
+
+    victory() {
+        this.synth.triggerAttackRelease('C5', '8n')
+    }
+
+    defeat() {
+        this.synth.triggerAttackRelease('F2', '8n')
+    }
 }
