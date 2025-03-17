@@ -7,7 +7,7 @@ export class Ball {
     dy: number
     speed: number
 
-    constructor(position: { x: number; y: number }, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
+    constructor(position: Position, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
         this.position = position
         this.radius = radius
         this.dx = dx
@@ -28,13 +28,16 @@ export class Ball {
         return this.position.y + this.radius - 1 >= y && this.position.y - this.radius + 1 <= y
     }
 
-    collideLine(x1: number, y1: number, x2: number, y2: number) {
+    collideLine(pointA: Position, pointB: Position): boolean {
         // Step 1: Calculate the coefficients of the quadratic equation
-        const dx = x2 - x1
-        const dy = y2 - y1
+        const dx = pointB.x - pointA.x
+        const dy = pointB.y - pointA.y
         const A = dx * dx + dy * dy
-        const B = 2 * (dx * (x1 - this.position.x) + dy * (y1 - this.position.y))
-        const C = (x1 - this.position.x) * (x1 - this.position.x) + (y1 - this.position.y) * (y1 - this.position.y) - this.radius * this.radius
+        const B = 2 * (dx * (pointA.x - this.position.x) + dy * (pointA.y - this.position.y))
+        const C =
+            (pointA.x - this.position.x) * (pointA.x - this.position.x) +
+            (pointA.y - this.position.y) * (pointA.y - this.position.y) -
+            this.radius * this.radius
 
         // Step 2: Calculate the discriminant
         const discriminant = B * B - 4 * A * C
