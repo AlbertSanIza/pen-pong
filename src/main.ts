@@ -1,13 +1,16 @@
 import { Ball } from './ball'
 import { Paddle } from './paddle'
 import { ParticleSystem } from './particle-system'
+import { Score } from './score'
 import { SoundSystem } from './sound-system'
 import './style.css'
 
+const MAX_SCORE = 5
 const BALL_RADIUS = 16
 const BALL_SPEED = 8
 
-export class PongGame {
+export class Game {
+    score: Score
     canvas: HTMLCanvasElement = document.getElementById('game-canvas') as HTMLCanvasElement
     ctx: CanvasRenderingContext2D = this.canvas.getContext('2d') as CanvasRenderingContext2D
     stateElement: HTMLElement = document.getElementById('state') as HTMLElement
@@ -33,6 +36,7 @@ export class PongGame {
     maxPoints: number = 5
 
     constructor() {
+        this.score = new Score(MAX_SCORE)
         this.init()
         this.setupEventListeners()
         this.soundSystem.init()
@@ -140,10 +144,7 @@ export class PongGame {
 
     finishGame() {
         this.gameOver = true
-        const { letter, message, color } = calculateGrade(
-            parseInt(this.playerScoreElement.textContent || '0') - parseInt(this.aiScoreElement.textContent || '0'),
-            this.maxPoints
-        )
+        const { letter, message, color } = this.score.getLetterScore()
         this.stateButton.classList.add('hidden')
         this.stateElement.classList.remove('hidden')
         this.gradeElement.style.color = color
@@ -170,9 +171,9 @@ export class PongGame {
         const collideLeft = this.ball.collideX(0)
         if (collideLeft || this.ball.collideX(this.canvas.width)) {
             if (collideLeft) {
-                this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
+                this.aiScoreElement.textContent = `${this.score.incrementPlayerScore()}`
             } else {
-                this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
+                this.playerScoreElement.textContent = `${this.score.incrementAIScore()}`
                 this.aiPaddle.increaseSpeed()
             }
             if (Number(this.playerScoreElement.textContent) == this.maxPoints || Number(this.aiScoreElement.textContent) == this.maxPoints) {
@@ -273,25 +274,4 @@ export class PongGame {
     }
 }
 
-new PongGame()
-
-function calculateGrade(delta: number, maxScoreDelta: number): { letter: string; message: string; color: string } {
-    if (delta <= 0) {
-        return { letter: 'F', message: 'I got no words...', color: 'red' }
-    }
-    const messages = ['Keep trying!', 'You need to practice more!', 'Not bad, but you can do better!', 'Almost there!', 'Good job!', 'Perfect!']
-    const score = Math.floor((delta / maxScoreDelta) * 100)
-    if (score < 20) {
-        return { letter: 'E', message: messages[0], color: 'oklch(0.646 0.222 41.116)' }
-    } else if (score < 40) {
-        return { letter: 'D', message: messages[1], color: 'oklch(0.666 0.179 58.318)' }
-    } else if (score < 60) {
-        return { letter: 'C', message: messages[2], color: 'oklch(0.795 0.184 86.047)' }
-    } else if (score < 80) {
-        return { letter: 'B', message: messages[3], color: 'oklch(0.905 0.182 98.111)' }
-    } else if (score < 100) {
-        return { letter: 'A-', message: messages[4], color: 'oklch(0.841 0.238 128.85)' }
-    } else {
-        return { letter: 'A+', message: messages[5], color: 'oklch(0.723 0.219 149.579)' }
-    }
-}
+new Game()
