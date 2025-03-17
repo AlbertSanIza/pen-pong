@@ -10,13 +10,17 @@ export class Position {
     get x(): number {
         return this._x
     }
+
+    set x(value: number) {
+        this._x = value
+    }
+
     get y(): number {
         return this._y
     }
 
-    update(x: number, y: number) {
-        this._x = x
-        this._y = y
+    set y(value: number) {
+        this._y = value
     }
 
     move(x: number, y: number) {
