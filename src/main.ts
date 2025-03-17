@@ -8,6 +8,8 @@ export class PongGame {
     stateElement: HTMLElement = document.getElementById('state') as HTMLElement
     pausedIndicatorElement: HTMLElement = document.getElementById('paused-indicator') as HTMLElement
     gradeElement: HTMLElement = document.getElementById('grade') as HTMLElement
+    gradeLetterElement: HTMLElement = document.getElementById('grade-letter') as HTMLElement
+    gradeMessageElement: HTMLElement = document.getElementById('grade-message') as HTMLElement
     stateButton: HTMLElement = document.getElementById('state-button') as HTMLElement
     soundSystem: SoundSystem = new SoundSystem()
     paddleHeight!: number
@@ -137,6 +139,12 @@ export class PongGame {
         this.stateElement.classList.remove('hidden')
         this.gradeElement.classList.remove('hidden')
         this.gradeElement.classList.add('flex')
+        const { letter, message } = calculateGrade(
+            parseInt(this.playerScoreElement.textContent || '0') - parseInt(this.aiScoreElement.textContent || '0'),
+            this.maxPoints
+        )
+        this.gradeLetterElement.textContent = letter
+        this.gradeMessageElement.textContent = message
     }
 
     update() {
@@ -274,3 +282,24 @@ export class PongGame {
 }
 
 new PongGame()
+
+function calculateGrade(delta: number, maxScoreDelta: number): { letter: string; message: string } {
+    if (delta <= 0) {
+        return { letter: 'F', message: 'I got no words...' }
+    }
+    const messages = ['Keep trying!', 'You need to practice more.', 'Not bad, but you can do better.', 'Almost there!', 'Good job!', 'Perfect!']
+    const score = Math.floor((delta / maxScoreDelta) * 100)
+    if (score < 40) {
+        return { letter: 'E', message: messages[0] }
+    } else if (score < 60) {
+        return { letter: 'D', message: messages[1] }
+    } else if (score < 80) {
+        return { letter: 'C', message: messages[2] }
+    } else if (score < 90) {
+        return { letter: 'B', message: messages[3] }
+    } else if (score < 100) {
+        return { letter: 'A-', message: messages[4] }
+    } else {
+        return { letter: 'A+', message: messages[5] }
+    }
+}
