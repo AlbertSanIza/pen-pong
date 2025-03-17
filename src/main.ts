@@ -234,15 +234,14 @@ export class PongGame {
     }
 
     draw() {
-        // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         // Draw center line
         this.ctx.setLineDash([5, 3])
+        this.ctx.strokeStyle = 'oklch(0.623 0.214 259.815)'
         this.ctx.beginPath()
         this.ctx.moveTo(this.canvas.width / 2, 0)
         this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
-        this.ctx.strokeStyle = 'oklch(0.623 0.214 259.815)'
         this.ctx.stroke()
         this.ctx.setLineDash([])
 
