@@ -4,7 +4,7 @@ import { ParticleSystem } from './particle-system'
 import { SoundSystem } from './sound-system'
 import './style.css'
 
-const BALL_RADIUS = 40
+const BALL_RADIUS = 16
 const BALL_SPEED = 8
 
 export class PongGame {
