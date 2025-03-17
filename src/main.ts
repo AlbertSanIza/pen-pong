@@ -26,7 +26,7 @@ export class PongGame {
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
     paddleWidth: number = 30
     ballRadius: number = 14
-    maxPoints: number = 20
+    maxPoints: number = 10
 
     constructor() {
         this.init()
@@ -125,10 +125,12 @@ export class PongGame {
     pauseGame() {
         this.gamePaused = !this.gamePaused
         if (this.gamePaused) {
+            this.soundSystem.pause()
             this.pausedIndicatorElement.classList.remove('hidden')
             this.stateButton.textContent = 'Resume'
             this.stateElement.classList.remove('hidden')
         } else {
+            this.soundSystem.unpause()
             this.startGame()
         }
     }
@@ -145,6 +147,11 @@ export class PongGame {
         )
         this.gradeLetterElement.textContent = letter
         this.gradeMessageElement.textContent = message
+        if (letter === 'F') {
+            this.soundSystem.defeat()
+        } else {
+            this.soundSystem.victory()
+        }
     }
 
     update() {
