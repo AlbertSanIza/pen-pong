@@ -24,7 +24,7 @@ export class PongGame {
     playerScoreElement: HTMLElement = document.getElementById('score-a') as HTMLElement
     aiScoreElement: HTMLElement = document.getElementById('score-b') as HTMLElement
     playerPaddle!: Paddle
-    aiPaddle!: { y: number; speed: number }
+    aiPaddle!: Paddle
     ball!: Ball
     autoPlay: boolean = false
     particles!: ParticleSystem
@@ -47,10 +47,12 @@ export class PongGame {
         this.playerScoreElement.textContent = '0'
         this.aiScoreElement.textContent = '0'
         this.playerPaddle = new Paddle({ x: 0, y: this.canvas.height / 2 - this.paddleHeight / 2 }, this.paddleWidth, this.paddleHeight, 2)
-        this.aiPaddle = {
-            y: this.canvas.height / 2 - this.paddleHeight / 2,
-            speed: 2
-        }
+        this.aiPaddle = new Paddle(
+            { x: this.canvas.width - this.paddleWidth, y: this.canvas.height / 2 - this.paddleHeight / 2 },
+            this.paddleWidth,
+            this.paddleHeight,
+            2
+        )
         this.resetBall()
         this.particles = new ParticleSystem(this.ctx)
         this.draw()
@@ -200,15 +202,15 @@ export class PongGame {
         if (
             this.ball.collideLine(
                 this.canvas.width - this.paddleWidth,
-                this.aiPaddle.y,
+                this.aiPaddle.position.y,
                 this.canvas.width - this.paddleWidth,
-                this.aiPaddle.y + this.paddleHeight
+                this.aiPaddle.position.y + this.paddleHeight
             )
         ) {
             this.soundSystem.paddleHit()
             this.ball.bounceX()
             this.ball.position.x = this.canvas.width - this.paddleWidth - this.ballRadius
-            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
         }
 
         if (this.autoPlay) {
@@ -221,11 +223,11 @@ export class PongGame {
             }
         }
 
-        const aiCenter = this.aiPaddle.y + this.paddleHeight / 2
+        const aiCenter = this.aiPaddle.position.y + this.paddleHeight / 2
         if (this.ball.position.y > aiCenter) {
-            this.aiPaddle.y = Math.min(this.aiPaddle.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
+            this.aiPaddle.position.y = Math.min(this.aiPaddle.position.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
         } else if (this.ball.position.y < aiCenter) {
-            this.aiPaddle.y = Math.max(this.aiPaddle.y - this.aiPaddle.speed, 0)
+            this.aiPaddle.position.y = Math.max(this.aiPaddle.position.y - this.aiPaddle.speed, 0)
         }
     }
 
@@ -245,7 +247,7 @@ export class PongGame {
         // Draw paddles
         this.ctx.fillStyle = '#155dfc'
         this.ctx.fillRect(0, this.playerPaddle.position.y, this.paddleWidth, this.paddleHeight)
-        this.ctx.fillRect(this.canvas.width - this.paddleWidth, this.aiPaddle.y, this.paddleWidth, this.paddleHeight)
+        this.ctx.fillRect(this.canvas.width - this.paddleWidth, this.aiPaddle.position.y, this.paddleWidth, this.paddleHeight)
 
         // Draw particles
         this.particles.draw()
