@@ -15,11 +15,11 @@ export class Score {
     }
 
     incrementPlayerScore() {
-        return this.player++
+        return ++this.player
     }
 
     incrementAIScore() {
-        return this.ai++
+        return ++this.ai
     }
 
     getLetterScore() {
