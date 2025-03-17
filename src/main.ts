@@ -168,8 +168,7 @@ export class PongGame {
 
         // Wall X collision
         const collideLeft = this.ball.collideX(0)
-        const collideRight = this.ball.collideX(this.canvas.width)
-        if (collideLeft || collideRight) {
+        if (collideLeft || this.ball.collideX(this.canvas.width)) {
             if (collideLeft) {
                 this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
             } else {
