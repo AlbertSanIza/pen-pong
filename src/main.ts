@@ -4,6 +4,7 @@ import { SoundSystem } from './sound-system'
 import './style.css'
 
 const BALL_RADIUS = 14
+const BALL_SPEED = 8
 
 export class PongGame {
     canvas: HTMLCanvasElement = document.getElementById('game-canvas') as HTMLCanvasElement
@@ -29,7 +30,7 @@ export class PongGame {
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
     paddleWidth: number = 30
     ballRadius: number = 14
-    maxPoints: number = 10
+    maxPoints: number = 5
 
     constructor() {
         this.init()
@@ -66,12 +67,12 @@ export class PongGame {
 
     resetBall() {
         this.ball = new Ball(
+            BALL_RADIUS,
             this.canvas.width / 2,
             this.canvas.height / 2,
-            BALL_RADIUS,
             Math.random() > 0.5 ? 1 : -1,
             (Math.random() * 2 - 1) * 0.5,
-            this.autoPlay ? 18 : 5
+            this.autoPlay ? BALL_SPEED : BALL_SPEED
         )
     }
 
@@ -167,29 +168,77 @@ export class PongGame {
         }
         this.particles.update()
 
-        // Top collision
-        if (this.ball.position.y - this.ball.radius + 1 <= 0) {
-            this.ball.dy = Math.abs(this.ball.dy)
-            this.soundSystem.wallHit()
-        }
-        // Bottom collision
-        if (this.ball.position.y + this.ball.radius - 1 >= this.canvas.height) {
-            this.ball.dy = -Math.abs(this.ball.dy)
-            this.soundSystem.wallHit()
+        // Wall X collision
+        const collideLeft = this.ball.collideX(0)
+        const collideRight = this.ball.collideX(this.canvas.width)
+        if (collideLeft || collideRight) {
+            if (collideLeft) {
+                this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
+            } else {
+                this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
+                this.aiPaddle.speed += 0.5
+            }
+            if (Number(this.playerScoreElement.textContent) == this.maxPoints || Number(this.aiScoreElement.textContent) == this.maxPoints) {
+                this.finishGame()
+                return
+            }
+            this.soundSystem.score()
+            this.particles.createExplosion(this.ball.position)
+            this.resetBall()
         }
 
+        // Wall Y collision
+        if (this.ball.collideY(0) || this.ball.collideY(this.canvas.height)) {
+            this.soundSystem.wallHit()
+            this.ball.bounceY()
+        }
+
+        // Paddle collision
+        if (this.ball.collideLine(this.paddleWidth, this.playerPaddle.y, this.paddleWidth, this.playerPaddle.y + this.paddleHeight)) {
+            this.soundSystem.paddleHit()
+            this.ball.bounceX()
+            this.ball.position.x = this.paddleWidth + this.ballRadius
+            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+        }
+        if (
+            this.ball.collideLine(
+                this.canvas.width - this.paddleWidth,
+                this.aiPaddle.y,
+                this.canvas.width - this.paddleWidth,
+                this.aiPaddle.y + this.paddleHeight
+            )
+        ) {
+            this.soundSystem.paddleHit()
+            this.ball.bounceX()
+            this.ball.position.x = this.canvas.width - this.paddleWidth - this.ballRadius
+            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+        }
+
+        if (this.autoPlay) {
+            const playerCenter = this.playerPaddle.y + this.paddleHeight / 2
+            if (this.ball.position.y > playerCenter) {
+                this.playerPaddle.y = Math.min(this.playerPaddle.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
+            }
+            if (this.ball.position.y < playerCenter) {
+                this.playerPaddle.y = Math.max(this.playerPaddle.y - this.playerPaddle.speed, 0)
+            }
+        }
+
+        const aiCenter = this.aiPaddle.y + this.paddleHeight / 2
+        if (this.ball.position.y > aiCenter) {
+            this.aiPaddle.y = Math.min(this.aiPaddle.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
+        } else if (this.ball.position.y < aiCenter) {
+            this.aiPaddle.y = Math.max(this.aiPaddle.y - this.aiPaddle.speed, 0)
+        }
+
+        return
         // Left paddle collision
         if (
             this.ball.position.x - this.ballRadius + 1 <= this.paddleWidth &&
             this.ball.position.y >= this.playerPaddle.y &&
             this.ball.position.y <= this.playerPaddle.y + this.paddleHeight
         ) {
-            this.ball.dx *= -1
             this.ball.dy += ((this.ball.position.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
-            this.soundSystem.paddleHit()
-            if (this.ball.speed === 5) {
-                this.ball.speed = 8
-            }
         }
 
         // Right paddle collision
@@ -198,56 +247,7 @@ export class PongGame {
             this.ball.position.y >= this.aiPaddle.y &&
             this.ball.position.y <= this.aiPaddle.y + this.paddleHeight
         ) {
-            this.ball.dx *= -1
             this.ball.dy += ((this.ball.position.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
-            this.soundSystem.paddleHit()
-            if (this.ball.speed === 5) {
-                this.ball.speed = 8
-            }
-        }
-
-        // Scoring and explosions
-        if (this.ball.position.x >= this.canvas.width - this.ballRadius) {
-            this.particles.createExplosion(this.ball.position.x, this.ball.position.y)
-            this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
-            if (Number(this.playerScoreElement.textContent) == this.maxPoints) {
-                this.finishGame()
-                return
-            }
-            this.aiPaddle.speed += 0.5
-            this.soundSystem.score()
-            this.aiPaddle.y = this.canvas.height / 2 - this.paddleHeight / 2
-            this.resetBall()
-        }
-        if (this.ball.position.x <= 0 + this.ball.radius) {
-            this.particles.createExplosion(this.ball.position.x, this.ball.position.y)
-            this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
-            if (Number(this.aiScoreElement.textContent) == this.maxPoints) {
-                this.finishGame()
-                return
-            }
-            if (this.autoPlay) {
-                this.playerPaddle.speed += 0.25
-            }
-            this.soundSystem.score()
-            this.resetBall()
-        }
-
-        if (this.autoPlay) {
-            const playerCenter = this.playerPaddle.y + this.paddleHeight / 2
-            if (this.ball.position.y > playerCenter + 10) {
-                this.playerPaddle.y = Math.min(this.playerPaddle.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
-            }
-            if (this.ball.position.y < playerCenter - 10) {
-                this.playerPaddle.y = Math.max(this.playerPaddle.y - this.playerPaddle.speed, 0)
-            }
-        }
-
-        const aiCenter = this.aiPaddle.y + this.paddleHeight / 2
-        if (this.ball.position.y > aiCenter + 10) {
-            this.aiPaddle.y = Math.min(this.aiPaddle.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
-        } else if (this.ball.position.y < aiCenter - 10) {
-            this.aiPaddle.y = Math.max(this.aiPaddle.y - this.aiPaddle.speed, 0)
         }
     }
 
@@ -299,7 +299,7 @@ function calculateGrade(delta: number, maxScoreDelta: number): { letter: string;
     if (delta <= 0) {
         return { letter: 'F', message: 'I got no words...', color: 'red' }
     }
-    const messages = ['Keep trying!', 'You need to practice more.', 'Not bad, but you can do better.', 'Almost there!', 'Good job!', 'Perfect!']
+    const messages = ['Keep trying!', 'You need to practice more!', 'Not bad, but you can do better!', 'Almost there!', 'Good job!', 'Perfect!']
     const score = Math.floor((delta / maxScoreDelta) * 100)
     if (score < 20) {
         return { letter: 'E', message: messages[0], color: 'oklch(0.646 0.222 41.116)' }
