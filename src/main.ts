@@ -4,7 +4,7 @@ import { ParticleSystem } from './particle-system'
 import { SoundSystem } from './sound-system'
 import './style.css'
 
-const BALL_RADIUS = 14
+const BALL_RADIUS = 40
 const BALL_SPEED = 8
 
 export class PongGame {
@@ -30,7 +30,6 @@ export class PongGame {
     particles!: ParticleSystem
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
     paddleWidth: number = 30
-    ballRadius: number = 14
     maxPoints: number = 5
 
     constructor() {
@@ -201,7 +200,7 @@ export class PongGame {
         ) {
             this.soundSystem.paddleHit()
             this.ball.bounceX()
-            this.ball.position.x = this.paddleWidth + this.ballRadius
+            this.ball.position.x = this.paddleWidth + this.ball.radius
             this.ball.dy += ((this.ball.position.y - (this.playerPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
         }
         if (
@@ -212,7 +211,7 @@ export class PongGame {
         ) {
             this.soundSystem.paddleHit()
             this.ball.bounceX()
-            this.ball.position.x = this.canvas.width - this.paddleWidth - this.ballRadius
+            this.ball.position.x = this.canvas.width - this.paddleWidth - this.ball.radius
             this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
         }
 
@@ -260,7 +259,7 @@ export class PongGame {
         this.ctx.shadowBlur = 50
         this.ctx.shadowColor = '#155dfc'
         this.ctx.beginPath()
-        this.ctx.arc(this.ball.position.x, this.ball.position.y, this.ballRadius, 0, Math.PI * 2)
+        this.ctx.arc(this.ball.position.x, this.ball.position.y, this.ball.radius, 0, Math.PI * 2)
         this.ctx.fillStyle = '#155dfc'
         this.ctx.fill()
         this.ctx.closePath()
