@@ -1,6 +1,9 @@
+import { Ball } from './ball'
 import { ParticleSystem } from './particle-system'
 import { SoundSystem } from './sound-system'
 import './style.css'
+
+const BALL_RADIUS = 14
 
 export class PongGame {
     canvas: HTMLCanvasElement = document.getElementById('game-canvas') as HTMLCanvasElement
@@ -20,7 +23,7 @@ export class PongGame {
     aiScoreElement: HTMLElement = document.getElementById('score-b') as HTMLElement
     playerPaddle!: { y: number; speed: number }
     aiPaddle!: { y: number; speed: number }
-    ball!: { x: number; y: number; speed: number; dx: number; dy: number }
+    ball!: Ball
     autoPlay: boolean = false
     particles!: ParticleSystem
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
@@ -62,13 +65,14 @@ export class PongGame {
     }
 
     resetBall() {
-        this.ball = {
-            x: this.canvas.width / 2,
-            y: this.canvas.height / 2,
-            speed: this.autoPlay ? 18 : 5,
-            dx: Math.random() > 0.5 ? 1 : -1,
-            dy: (Math.random() * 2 - 1) * 0.5
-        }
+        this.ball = new Ball(
+            this.canvas.width / 2,
+            this.canvas.height / 2,
+            BALL_RADIUS,
+            Math.random() > 0.5 ? 1 : -1,
+            (Math.random() * 2 - 1) * 0.5,
+            this.autoPlay ? 18 : 5
+        )
     }
 
     setupEventListeners() {
@@ -156,34 +160,32 @@ export class PongGame {
     }
 
     update() {
-        // Update ball position
-        this.ball.x += this.ball.dx * this.ball.speed
-        this.ball.y += this.ball.dy * this.ball.speed
+        this.ball.move()
 
         for (let i = 0; i < 3; i++) {
-            this.particles.particles.push(this.particles.createParticle(this.ball.x, this.ball.y, -this.ball.dx, -this.ball.dy))
+            this.particles.particles.push(this.particles.createParticle(this.ball.position.x, this.ball.position.y, -this.ball.dx, -this.ball.dy))
         }
         this.particles.update()
 
         // Top collision
-        if (this.ball.y - this.ballRadius + 1 <= 0) {
+        if (this.ball.position.y - this.ball.radius + 1 <= 0) {
             this.ball.dy = Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
         // Bottom collision
-        if (this.ball.y + this.ballRadius - 1 >= this.canvas.height) {
+        if (this.ball.position.y + this.ball.radius - 1 >= this.canvas.height) {
             this.ball.dy = -Math.abs(this.ball.dy)
             this.soundSystem.wallHit()
         }
 
         // Left paddle collision
         if (
-            this.ball.x - this.ballRadius + 1 <= this.paddleWidth &&
-            this.ball.y >= this.playerPaddle.y &&
-            this.ball.y <= this.playerPaddle.y + this.paddleHeight
+            this.ball.position.x - this.ballRadius + 1 <= this.paddleWidth &&
+            this.ball.position.y >= this.playerPaddle.y &&
+            this.ball.position.y <= this.playerPaddle.y + this.paddleHeight
         ) {
             this.ball.dx *= -1
-            this.ball.dy += ((this.ball.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
             this.soundSystem.paddleHit()
             if (this.ball.speed === 5) {
                 this.ball.speed = 8
@@ -192,12 +194,12 @@ export class PongGame {
 
         // Right paddle collision
         if (
-            this.ball.x + this.ballRadius - 1 >= this.canvas.width - this.paddleWidth &&
-            this.ball.y >= this.aiPaddle.y &&
-            this.ball.y <= this.aiPaddle.y + this.paddleHeight
+            this.ball.position.x + this.ballRadius - 1 >= this.canvas.width - this.paddleWidth &&
+            this.ball.position.y >= this.aiPaddle.y &&
+            this.ball.position.y <= this.aiPaddle.y + this.paddleHeight
         ) {
             this.ball.dx *= -1
-            this.ball.dy += ((this.ball.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
             this.soundSystem.paddleHit()
             if (this.ball.speed === 5) {
                 this.ball.speed = 8
@@ -205,8 +207,8 @@ export class PongGame {
         }
 
         // Scoring and explosions
-        if (this.ball.x >= this.canvas.width - this.ballRadius) {
-            this.particles.createExplosion(this.ball.x, this.ball.y)
+        if (this.ball.position.x >= this.canvas.width - this.ballRadius) {
+            this.particles.createExplosion(this.ball.position.x, this.ball.position.y)
             this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
             if (Number(this.playerScoreElement.textContent) == this.maxPoints) {
                 this.finishGame()
@@ -217,8 +219,8 @@ export class PongGame {
             this.aiPaddle.y = this.canvas.height / 2 - this.paddleHeight / 2
             this.resetBall()
         }
-        if (this.ball.x <= 0 + this.ballRadius) {
-            this.particles.createExplosion(this.ball.x, this.ball.y)
+        if (this.ball.position.x <= 0 + this.ball.radius) {
+            this.particles.createExplosion(this.ball.position.x, this.ball.position.y)
             this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
             if (Number(this.aiScoreElement.textContent) == this.maxPoints) {
                 this.finishGame()
@@ -233,18 +235,18 @@ export class PongGame {
 
         if (this.autoPlay) {
             const playerCenter = this.playerPaddle.y + this.paddleHeight / 2
-            if (this.ball.y > playerCenter + 10) {
+            if (this.ball.position.y > playerCenter + 10) {
                 this.playerPaddle.y = Math.min(this.playerPaddle.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
             }
-            if (this.ball.y < playerCenter - 10) {
+            if (this.ball.position.y < playerCenter - 10) {
                 this.playerPaddle.y = Math.max(this.playerPaddle.y - this.playerPaddle.speed, 0)
             }
         }
 
         const aiCenter = this.aiPaddle.y + this.paddleHeight / 2
-        if (this.ball.y > aiCenter + 10) {
+        if (this.ball.position.y > aiCenter + 10) {
             this.aiPaddle.y = Math.min(this.aiPaddle.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
-        } else if (this.ball.y < aiCenter - 10) {
+        } else if (this.ball.position.y < aiCenter - 10) {
             this.aiPaddle.y = Math.max(this.aiPaddle.y - this.aiPaddle.speed, 0)
         }
     }
@@ -275,7 +277,7 @@ export class PongGame {
         this.ctx.shadowBlur = 50
         this.ctx.shadowColor = '#155dfc'
         this.ctx.beginPath()
-        this.ctx.arc(this.ball.x, this.ball.y, this.ballRadius, 0, Math.PI * 2)
+        this.ctx.arc(this.ball.position.x, this.ball.position.y, this.ballRadius, 0, Math.PI * 2)
         this.ctx.fillStyle = '#155dfc'
         this.ctx.fill()
         this.ctx.closePath()
