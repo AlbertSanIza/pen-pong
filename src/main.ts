@@ -67,13 +67,14 @@ export class PongGame {
 
     resetBall() {
         this.ball = new Ball(
-            BALL_RADIUS,
             this.canvas.width / 2,
             this.canvas.height / 2,
+            BALL_RADIUS,
             Math.random() > 0.5 ? 1 : -1,
             (Math.random() * 2 - 1) * 0.5,
             this.autoPlay ? BALL_SPEED : BALL_SPEED
         )
+        console.log('🚀 ~ PongGame ~ resetBall ~ this.ball:', this.ball)
     }
 
     setupEventListeners() {

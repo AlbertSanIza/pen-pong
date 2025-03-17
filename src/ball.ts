@@ -7,7 +7,7 @@ export class Ball {
     dy: number
     speed: number
 
-    constructor(x: number = 0, y: number = 0, radius: number = 10, dx: number = 0, dy: number = 0, speed: number = 0) {
+    constructor(x: number, y: number, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
         this.position = new Position({ x, y })
         this.radius = radius
         this.dx = dx
