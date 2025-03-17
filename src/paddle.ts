@@ -1,12 +1,12 @@
-import { Position } from './types'
+import { Point } from './types'
 
 export class Paddle {
-    position: Position
+    position: Point
     width: number
     height: number
     speed: number
 
-    constructor(position: Position, width: number, height: number, speed: number) {
+    constructor(position: Point, width: number, height: number, speed: number) {
         this.position = position
         this.width = width
         this.height = height

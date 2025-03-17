@@ -1,13 +1,13 @@
-import { Position } from './types'
+import { Point } from './types'
 
 export class Ball {
-    position: Position
+    position: Point
     radius: number
     dx: number
     dy: number
     speed: number
 
-    constructor(position: Position, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
+    constructor(position: Point, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
         this.position = position
         this.radius = radius
         this.dx = dx
@@ -28,7 +28,7 @@ export class Ball {
         return this.position.y + this.radius - 1 >= y && this.position.y - this.radius + 1 <= y
     }
 
-    collideLine(pointA: Position, pointB: Position): boolean {
+    collideLine(pointA: Point, pointB: Point): boolean {
         // Step 1: Calculate the coefficients of the quadratic equation
         const dx = pointB.x - pointA.x
         const dy = pointB.y - pointA.y
