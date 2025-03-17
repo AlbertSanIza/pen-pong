@@ -26,7 +26,7 @@ export class PongGame {
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
     paddleWidth: number = 30
     ballRadius: number = 14
-    maxPoints: number = 20
+    maxPoints: number = 10
 
     constructor() {
         this.init()
@@ -206,7 +206,7 @@ export class PongGame {
                 this.finishGame()
                 return
             }
-            this.aiPaddle.speed += 0.2
+            this.aiPaddle.speed += 0.5
             this.soundSystem.score()
             this.aiPaddle.y = this.canvas.height / 2 - this.paddleHeight / 2
             this.resetBall()
@@ -219,7 +219,7 @@ export class PongGame {
                 return
             }
             if (this.autoPlay) {
-                this.playerPaddle.speed += 0.2
+                this.playerPaddle.speed += 0.25
             }
             this.soundSystem.score()
             this.resetBall()
