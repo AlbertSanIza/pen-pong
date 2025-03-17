@@ -2,7 +2,7 @@ export class Position {
     private _x: number
     private _y: number
 
-    constructor({ x = 0, y = 0 }: { x?: number; y?: number }) {
+    constructor({ x, y }: { x: number; y: number }) {
         this._x = x
         this._y = y
     }
