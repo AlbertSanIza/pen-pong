@@ -65,7 +65,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: this.autoPlay ? 18 : 9,
+            speed: this.autoPlay ? 18 : 8,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
