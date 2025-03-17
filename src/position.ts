@@ -2,9 +2,9 @@ export class Position {
     x: number
     y: number
 
-    constructor({ x, y }: { x: number; y: number }) {
-        this.x = x
-        this.y = y
+    constructor(coordinates: { x: number; y: number }) {
+        this.x = coordinates.x
+        this.y = coordinates.y
     }
 
     move({ dx, dy }: { dx: number; dy: number }) {
