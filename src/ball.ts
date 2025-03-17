@@ -16,7 +16,7 @@ export class Ball {
     }
 
     move() {
-        this.position.move({ dx: this.dx * this.speed, dy: this.dy * this.speed })
+        this.position.move({ x: this.dx * this.speed, y: this.dy * this.speed })
     }
 
     collideX(x: number): boolean {
