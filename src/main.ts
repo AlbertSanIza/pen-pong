@@ -26,7 +26,7 @@ export class PongGame {
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
     paddleWidth: number = 30
     ballRadius: number = 14
-    maxPoints: number = 1
+    maxPoints: number = 20
 
     constructor() {
         this.init()
@@ -199,29 +199,25 @@ export class PongGame {
         }
 
         // Scoring and explosions
-        if (this.ball.x >= this.canvas.width) {
+        if (this.ball.x >= this.canvas.width - this.ballRadius) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
             if (Number(this.playerScoreElement.textContent) == this.maxPoints) {
                 this.finishGame()
                 return
             }
-            if (this.autoPlay) {
-                this.playerPaddle.speed += 0.1
-            }
             this.aiPaddle.speed += 0.2
             this.soundSystem.score()
             this.aiPaddle.y = this.canvas.height / 2 - this.paddleHeight / 2
             this.resetBall()
         }
-        if (this.ball.x <= 0) {
+        if (this.ball.x <= 0 + this.ballRadius) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
             if (Number(this.aiScoreElement.textContent) == this.maxPoints) {
                 this.finishGame()
                 return
             }
-            this.aiPaddle.speed += 0.1
             if (this.autoPlay) {
                 this.playerPaddle.speed += 0.2
             }
