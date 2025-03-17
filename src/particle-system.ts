@@ -19,10 +19,10 @@ export class ParticleSystem {
         this.colors = ['oklch(0.685 0.169 237.323)', 'oklch(0.623 0.214 259.815)', 'oklch(0.546 0.245 262.881)']
     }
 
-    createParticle(x: number, y: number, dx: number, dy: number, isExplosion = false): Particle {
+    createParticle(position: { x: number; y: number }, dx: number, dy: number, isExplosion = false): Particle {
         return {
-            x: x,
-            y: y,
+            x: position.x,
+            y: position.y,
             dx: isExplosion ? (Math.random() - 0.5) * 15 : (Math.random() - 0.5) * 2 + dx * 0.5,
             dy: isExplosion ? (Math.random() - 0.5) * 15 : (Math.random() - 0.5) * 2 + dy * 0.5,
             life: isExplosion ? 1.0 : 0.8,
@@ -31,9 +31,9 @@ export class ParticleSystem {
         }
     }
 
-    createExplosion({ x, y }: { x: number; y: number }, particleCount = 60) {
+    createExplosion(position: { x: number; y: number }, particleCount = 60) {
         for (let i = 0; i < particleCount; i++) {
-            this.particles.push(this.createParticle(x, y, 0, 0, true))
+            this.particles.push(this.createParticle(position, 0, 0, true))
         }
     }
 

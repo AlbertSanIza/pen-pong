@@ -164,7 +164,7 @@ export class PongGame {
         this.ball.move()
 
         for (let i = 0; i < 3; i++) {
-            this.particles.particles.push(this.particles.createParticle(this.ball.position.x, this.ball.position.y, -this.ball.dx, -this.ball.dy))
+            this.particles.particles.push(this.particles.createParticle(this.ball.position, -this.ball.dx, -this.ball.dy))
         }
         this.particles.update()
 
