@@ -31,7 +31,7 @@ export class ParticleSystem {
         }
     }
 
-    createExplosion(x: number, y: number, particleCount = 60) {
+    createExplosion({ x, y }: { x: number; y: number }, particleCount = 60) {
         for (let i = 0; i < particleCount; i++) {
             this.particles.push(this.createParticle(x, y, 0, 0, true))
         }
