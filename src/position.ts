@@ -7,8 +7,7 @@ export class Position {
         this.y = coordinates.y
     }
 
-    move(delta: { x: number; y: number }) {
-        this.x += delta.x
-        this.y += delta.y
+    get coordinates() {
+        return { x: this.x, y: this.y }
     }
 }
