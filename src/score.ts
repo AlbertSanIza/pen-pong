@@ -9,17 +9,21 @@ export class Score {
         this.max = max
     }
 
-    resetScore() {
-        this.player = 0
-        this.ai = 0
-    }
-
     incrementPlayerScore() {
         return ++this.player
     }
 
     incrementAIScore() {
         return ++this.ai
+    }
+
+    resetScore() {
+        this.player = 0
+        this.ai = 0
+    }
+
+    isMaxReached() {
+        return this.player >= this.max || this.ai >= this.max
     }
 
     getLetterScore() {

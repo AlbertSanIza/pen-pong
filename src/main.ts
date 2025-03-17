@@ -171,12 +171,12 @@ export class Game {
         const collideLeft = this.ball.collideX(0)
         if (collideLeft || this.ball.collideX(this.canvas.width)) {
             if (collideLeft) {
-                this.aiScoreElement.textContent = `${this.score.incrementPlayerScore()}`
+                this.aiScoreElement.textContent = `${this.score.incrementAIScore()}`
             } else {
-                this.playerScoreElement.textContent = `${this.score.incrementAIScore()}`
+                this.playerScoreElement.textContent = `${this.score.incrementPlayerScore()}`
                 this.aiPaddle.increaseSpeed()
             }
-            if (Number(this.playerScoreElement.textContent) == this.maxPoints || Number(this.aiScoreElement.textContent) == this.maxPoints) {
+            if (this.score.isMaxReached()) {
                 this.finishGame()
                 return
             }
