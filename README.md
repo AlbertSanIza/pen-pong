@@ -4,7 +4,7 @@
 
 https://albertsaniza.github.io/pen-pong
 
-![image](https://github.com/user-attachments/assets/12f37da1-0ee4-439e-bf36-f63a0c64a70b)
+![image](https://github.com/user-attachments/assets/6be9396a-d085-4461-aa2d-a3a5c19f55e3)
 
 ## Core Technologies
 
