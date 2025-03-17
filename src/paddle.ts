@@ -20,8 +20,4 @@ export class Paddle {
     increaseSpeed() {
         this._speed += 0.2
     }
-
-    decreaseSpeed() {
-        this._speed -= 0.2
-    }
 }

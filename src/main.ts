@@ -175,7 +175,7 @@ export class PongGame {
                 this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
             } else {
                 this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
-                this.aiPaddle.speed += 0.5
+                this.aiPaddle.increaseSpeed()
             }
             if (Number(this.playerScoreElement.textContent) == this.maxPoints || Number(this.aiScoreElement.textContent) == this.maxPoints) {
                 this.finishGame()
