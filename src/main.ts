@@ -230,25 +230,6 @@ export class PongGame {
         } else if (this.ball.position.y < aiCenter) {
             this.aiPaddle.y = Math.max(this.aiPaddle.y - this.aiPaddle.speed, 0)
         }
-
-        return
-        // Left paddle collision
-        if (
-            this.ball.position.x - this.ballRadius + 1 <= this.paddleWidth &&
-            this.ball.position.y >= this.playerPaddle.y &&
-            this.ball.position.y <= this.playerPaddle.y + this.paddleHeight
-        ) {
-            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
-        }
-
-        // Right paddle collision
-        if (
-            this.ball.position.x + this.ballRadius - 1 >= this.canvas.width - this.paddleWidth &&
-            this.ball.position.y >= this.aiPaddle.y &&
-            this.ball.position.y <= this.aiPaddle.y + this.paddleHeight
-        ) {
-            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
-        }
     }
 
     draw() {
