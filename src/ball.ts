@@ -1,13 +1,15 @@
+import { Position } from './position'
+
 export class Ball {
     radius: number
-    position: { x: number; y: number }
+    position: Position
     dx: number
     dy: number
     speed: number
 
     constructor(radius: number = 10, x: number = 0, y: number = 0, dx: number = 0, dy: number = 0, speed: number = 0) {
         this.radius = radius
-        this.position = { x, y }
+        this.position = new Position(x, y)
         this.dx = dx
         this.dy = dy
         this.speed = speed
