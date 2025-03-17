@@ -1,22 +1,22 @@
 import { Position } from './position'
 
 export class Ball {
-    radius: number
     position: Position
+    radius: number
     dx: number
     dy: number
     speed: number
 
-    constructor(radius: number = 10, x: number = 0, y: number = 0, dx: number = 0, dy: number = 0, speed: number = 0) {
+    constructor(x: number = 0, y: number = 0, radius: number = 10, dx: number = 0, dy: number = 0, speed: number = 0) {
+        this.position = new Position({ x, y })
         this.radius = radius
-        this.position = new Position(x, y)
         this.dx = dx
         this.dy = dy
         this.speed = speed
     }
 
     move() {
-        this.position.move(this.dx * this.speed, this.dy * this.speed)
+        this.position.move({ x: this.dx * this.speed, y: this.dy * this.speed })
     }
 
     collideX(x: number): boolean {

@@ -23,7 +23,7 @@ export class Position {
         this._y = value
     }
 
-    move(x: number, y: number) {
+    move({ x = 0, y = 0 }: { x?: number; y?: number }) {
         this._x += x
         this._y += y
     }
