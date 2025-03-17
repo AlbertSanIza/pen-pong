@@ -1,4 +1,4 @@
-import { Position } from './position'
+import { Position } from './types'
 
 export class Ball {
     position: Position
@@ -7,8 +7,8 @@ export class Ball {
     dy: number
     speed: number
 
-    constructor(coordinates: { x: number; y: number }, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
-        this.position = new Position(coordinates)
+    constructor(position: { x: number; y: number }, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
+        this.position = position
         this.radius = radius
         this.dx = dx
         this.dy = dy

@@ -1,4 +1,4 @@
-export interface Coordinates {
+export interface Position {
     x: number
     y: number
 }

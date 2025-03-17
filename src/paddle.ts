@@ -1,5 +1,4 @@
-import { Position } from './position'
-import { Coordinates } from './types'
+import { Position } from './types'
 
 export class Paddle {
     position: Position
@@ -7,8 +6,8 @@ export class Paddle {
     height: number
     speed: number
 
-    constructor(coordinates: Coordinates, width: number, height: number, speed: number) {
-        this.position = new Position(coordinates)
+    constructor(position: Position, width: number, height: number, speed: number) {
+        this.position = position
         this.width = width
         this.height = height
         this.speed = speed
