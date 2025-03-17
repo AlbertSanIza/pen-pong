@@ -25,4 +25,12 @@ export class Ball {
     collideY(y: number): boolean {
         return this.position.y + this.radius >= y && this.position.y - this.radius <= y
     }
+
+    bounceY() {
+        this.dy *= -1
+    }
+
+    bounceX() {
+        this.dx *= -1
+    }
 }
