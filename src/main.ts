@@ -1,4 +1,5 @@
 import { Ball } from './ball'
+import { Paddle } from './paddle'
 import { ParticleSystem } from './particle-system'
 import { SoundSystem } from './sound-system'
 import './style.css'
@@ -22,7 +23,7 @@ export class PongGame {
     gameOver!: boolean
     playerScoreElement: HTMLElement = document.getElementById('score-a') as HTMLElement
     aiScoreElement: HTMLElement = document.getElementById('score-b') as HTMLElement
-    playerPaddle!: { y: number; speed: number }
+    playerPaddle!: Paddle
     aiPaddle!: { y: number; speed: number }
     ball!: Ball
     autoPlay: boolean = false
@@ -45,10 +46,7 @@ export class PongGame {
         this.gameOver = false
         this.playerScoreElement.textContent = '0'
         this.aiScoreElement.textContent = '0'
-        this.playerPaddle = {
-            y: this.canvas.height / 2 - this.paddleHeight / 2,
-            speed: 2
-        }
+        this.playerPaddle = new Paddle({ x: 0, y: this.canvas.height / 2 - this.paddleHeight / 2 }, this.paddleWidth, this.paddleHeight, 2)
         this.aiPaddle = {
             y: this.canvas.height / 2 - this.paddleHeight / 2,
             speed: 2
@@ -92,7 +90,7 @@ export class PongGame {
             const touch = event.touches[0]
             const rect = this.canvas.getBoundingClientRect()
             const relativeY = touch.clientY - rect.top
-            this.playerPaddle.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
+            this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
         })
         this.canvas.addEventListener('mousemove', (event) => {
             if (this.autoPlay) {
@@ -100,7 +98,7 @@ export class PongGame {
             }
             const rect = this.canvas.getBoundingClientRect()
             const relativeY = event.clientY - rect.top
-            this.playerPaddle.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
+            this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
         })
     }
 
@@ -193,11 +191,11 @@ export class PongGame {
         }
 
         // Paddle collision
-        if (this.ball.collideLine(this.paddleWidth, this.playerPaddle.y, this.paddleWidth, this.playerPaddle.y + this.paddleHeight)) {
+        if (this.ball.collideLine(this.paddleWidth, this.playerPaddle.position.y, this.paddleWidth, this.playerPaddle.position.y + this.paddleHeight)) {
             this.soundSystem.paddleHit()
             this.ball.bounceX()
             this.ball.position.x = this.paddleWidth + this.ballRadius
-            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
         }
         if (
             this.ball.collideLine(
@@ -214,12 +212,12 @@ export class PongGame {
         }
 
         if (this.autoPlay) {
-            const playerCenter = this.playerPaddle.y + this.paddleHeight / 2
+            const playerCenter = this.playerPaddle.position.y + this.paddleHeight / 2
             if (this.ball.position.y > playerCenter) {
-                this.playerPaddle.y = Math.min(this.playerPaddle.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
+                this.playerPaddle.position.y = Math.min(this.playerPaddle.position.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
             }
             if (this.ball.position.y < playerCenter) {
-                this.playerPaddle.y = Math.max(this.playerPaddle.y - this.playerPaddle.speed, 0)
+                this.playerPaddle.position.y = Math.max(this.playerPaddle.position.y - this.playerPaddle.speed, 0)
             }
         }
 
@@ -246,7 +244,7 @@ export class PongGame {
 
         // Draw paddles
         this.ctx.fillStyle = '#155dfc'
-        this.ctx.fillRect(0, this.playerPaddle.y, this.paddleWidth, this.paddleHeight)
+        this.ctx.fillRect(0, this.playerPaddle.position.y, this.paddleWidth, this.paddleHeight)
         this.ctx.fillRect(this.canvas.width - this.paddleWidth, this.aiPaddle.y, this.paddleWidth, this.paddleHeight)
 
         // Draw particles
