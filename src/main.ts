@@ -65,7 +65,7 @@ export class PongGame {
         this.ball = {
             x: this.canvas.width / 2,
             y: this.canvas.height / 2,
-            speed: this.autoPlay ? 18 : 8,
+            speed: this.autoPlay ? 18 : 5,
             dx: Math.random() > 0.5 ? 1 : -1,
             dy: (Math.random() * 2 - 1) * 0.5
         }
@@ -185,6 +185,9 @@ export class PongGame {
             this.ball.dx *= -1
             this.ball.dy += ((this.ball.y - (this.playerPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
             this.soundSystem.paddleHit()
+            if (this.ball.speed === 5) {
+                this.ball.speed = 8
+            }
         }
 
         // Right paddle collision
@@ -196,6 +199,9 @@ export class PongGame {
             this.ball.dx *= -1
             this.ball.dy += ((this.ball.y - (this.aiPaddle.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
             this.soundSystem.paddleHit()
+            if (this.ball.speed === 5) {
+                this.ball.speed = 8
+            }
         }
 
         // Scoring and explosions
