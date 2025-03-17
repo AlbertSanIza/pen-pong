@@ -193,7 +193,12 @@ export class PongGame {
         }
 
         // Paddle collision
-        if (this.ball.collideLine(this.paddleWidth, this.playerPaddle.position.y, this.paddleWidth, this.playerPaddle.position.y + this.paddleHeight)) {
+        if (
+            this.ball.collideLine(
+                { x: this.paddleWidth, y: this.playerPaddle.position.y },
+                { x: this.paddleWidth, y: this.playerPaddle.position.y + this.paddleHeight }
+            )
+        ) {
             this.soundSystem.paddleHit()
             this.ball.bounceX()
             this.ball.position.x = this.paddleWidth + this.ballRadius
@@ -201,10 +206,8 @@ export class PongGame {
         }
         if (
             this.ball.collideLine(
-                this.canvas.width - this.paddleWidth,
-                this.aiPaddle.position.y,
-                this.canvas.width - this.paddleWidth,
-                this.aiPaddle.position.y + this.paddleHeight
+                { x: this.canvas.width - this.paddleWidth, y: this.aiPaddle.position.y },
+                { x: this.canvas.width - this.paddleWidth, y: this.aiPaddle.position.y + this.paddleHeight }
             )
         ) {
             this.soundSystem.paddleHit()
