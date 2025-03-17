@@ -7,6 +7,7 @@ export class PongGame {
     ctx: CanvasRenderingContext2D = this.canvas.getContext('2d') as CanvasRenderingContext2D
     stateElement: HTMLElement = document.getElementById('state') as HTMLElement
     pausedIndicatorElement: HTMLElement = document.getElementById('paused-indicator') as HTMLElement
+    gradeElement: HTMLElement = document.getElementById('grade') as HTMLElement
     stateButton: HTMLElement = document.getElementById('state-button') as HTMLElement
     soundSystem: SoundSystem = new SoundSystem()
     paddleHeight!: number
@@ -23,6 +24,7 @@ export class PongGame {
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
     paddleWidth: number = 30
     ballRadius: number = 14
+    maxPoints: number = 1
 
     constructor() {
         this.init()
@@ -70,7 +72,7 @@ export class PongGame {
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
         window.addEventListener('keydown', (event) => {
-            if (this.gameStarted && event.key === 'Escape') {
+            if (this.gameStarted && !this.gameOver && event.key === 'Escape') {
                 this.pauseGame()
             }
         })
@@ -108,8 +110,11 @@ export class PongGame {
     }
 
     resetGame() {
+        this.gradeElement.classList.remove('flex')
+        this.gradeElement.classList.add('hidden')
         this.pausedIndicatorElement.classList.add('hidden')
         this.stateButton.textContent = 'Start'
+        this.stateButton.classList.remove('hidden')
         this.stateElement.classList.remove('hidden')
         this.resetButton.classList.add('hidden')
         this.init()
@@ -121,10 +126,17 @@ export class PongGame {
             this.pausedIndicatorElement.classList.remove('hidden')
             this.stateButton.textContent = 'Resume'
             this.stateElement.classList.remove('hidden')
-            // this.resetButton.classList.add('hidden')
         } else {
             this.startGame()
         }
+    }
+
+    finishGame() {
+        this.gameOver = true
+        this.stateButton.classList.add('hidden')
+        this.stateElement.classList.remove('hidden')
+        this.gradeElement.classList.remove('hidden')
+        this.gradeElement.classList.add('flex')
     }
 
     update() {
@@ -174,6 +186,10 @@ export class PongGame {
         if (this.ball.x >= this.canvas.width) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.playerScoreElement.textContent = `${parseInt(this.playerScoreElement.textContent || '0') + 1}`
+            if (Number(this.playerScoreElement.textContent) == this.maxPoints) {
+                this.finishGame()
+                return
+            }
             if (this.autoPlay) {
                 this.playerPaddle.speed += 0.1
             }
@@ -185,6 +201,10 @@ export class PongGame {
         if (this.ball.x <= 0) {
             this.particles.createExplosion(this.ball.x, this.ball.y)
             this.aiScoreElement.textContent = `${parseInt(this.aiScoreElement.textContent || '0') + 1}`
+            if (Number(this.aiScoreElement.textContent) == this.maxPoints) {
+                this.finishGame()
+                return
+            }
             this.aiPaddle.speed += 0.1
             if (this.autoPlay) {
                 this.playerPaddle.speed += 0.2
