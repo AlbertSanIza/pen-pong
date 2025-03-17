@@ -26,7 +26,7 @@ export class PongGame {
     resetButton: HTMLElement = document.getElementById('reset-button') as HTMLElement
     paddleWidth: number = 30
     ballRadius: number = 14
-    maxPoints: number = 10
+    maxPoints: number = 1
 
     constructor() {
         this.init()
@@ -137,14 +137,15 @@ export class PongGame {
 
     finishGame() {
         this.gameOver = true
-        this.stateButton.classList.add('hidden')
-        this.stateElement.classList.remove('hidden')
-        this.gradeElement.classList.remove('hidden')
-        this.gradeElement.classList.add('flex')
-        const { letter, message } = calculateGrade(
+        const { letter, message, color } = calculateGrade(
             parseInt(this.playerScoreElement.textContent || '0') - parseInt(this.aiScoreElement.textContent || '0'),
             this.maxPoints
         )
+        this.stateButton.classList.add('hidden')
+        this.stateElement.classList.remove('hidden')
+        this.gradeElement.style.color = color
+        this.gradeElement.classList.remove('hidden')
+        this.gradeElement.classList.add('flex')
         this.gradeLetterElement.textContent = letter
         this.gradeMessageElement.textContent = message
         if (letter === 'F') {
@@ -290,23 +291,23 @@ export class PongGame {
 
 new PongGame()
 
-function calculateGrade(delta: number, maxScoreDelta: number): { letter: string; message: string } {
+function calculateGrade(delta: number, maxScoreDelta: number): { letter: string; message: string; color: string } {
     if (delta <= 0) {
-        return { letter: 'F', message: 'I got no words...' }
+        return { letter: 'F', message: 'I got no words...', color: 'red' }
     }
     const messages = ['Keep trying!', 'You need to practice more.', 'Not bad, but you can do better.', 'Almost there!', 'Good job!', 'Perfect!']
     const score = Math.floor((delta / maxScoreDelta) * 100)
     if (score < 40) {
-        return { letter: 'E', message: messages[0] }
+        return { letter: 'E', message: messages[0], color: 'red' }
     } else if (score < 60) {
-        return { letter: 'D', message: messages[1] }
+        return { letter: 'D', message: messages[1], color: 'orange' }
     } else if (score < 80) {
-        return { letter: 'C', message: messages[2] }
+        return { letter: 'C', message: messages[2], color: 'green' }
     } else if (score < 90) {
-        return { letter: 'B', message: messages[3] }
+        return { letter: 'B', message: messages[3], color: 'green' }
     } else if (score < 100) {
-        return { letter: 'A-', message: messages[4] }
+        return { letter: 'A-', message: messages[4], color: 'green' }
     } else {
-        return { letter: 'A+', message: messages[5] }
+        return { letter: 'A+', message: messages[5], color: 'green' }
     }
 }
