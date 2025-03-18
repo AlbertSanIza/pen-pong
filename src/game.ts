@@ -9,6 +9,7 @@ class Game {
     constructor() {
         this.state = new State()
         this.init()
+        this.setupEventListeners()
     }
 
     init() {
@@ -19,6 +20,15 @@ class Game {
         const { width, height } = this.canvas.getBoundingClientRect()
         this.canvas.width = width
         this.canvas.height = height
+    }
+
+    setupEventListeners() {
+        window.addEventListener('resize', () => this.resize())
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.state.togglePause()
+            }
+        })
     }
 }
 
