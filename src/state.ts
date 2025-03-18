@@ -1,5 +1,6 @@
 export class State {
     private _buttonElement: HTMLElement
+    private _resetButtonElement: HTMLElement
     private _pausedElement: HTMLElement
     private _playerScoreElement: HTMLElement
     private _aiScoreElement: HTMLElement
@@ -12,6 +13,7 @@ export class State {
 
     constructor(maxScore: number = 10) {
         this._buttonElement = document.getElementById('state-button') as HTMLElement
+        this._resetButtonElement = document.getElementById('state-reset-button') as HTMLElement
         this._pausedElement = document.getElementById('state-paused') as HTMLElement
         this._playerScoreElement = document.getElementById('state-player-score') as HTMLElement
         this._aiScoreElement = document.getElementById('state-ai-score') as HTMLElement
@@ -32,8 +34,10 @@ export class State {
         this._paused = value
         if (value) {
             this._pausedElement.classList.remove('hidden')
+            this._buttonElement.textContent = 'RESUME'
         } else {
             this._pausedElement.classList.add('hidden')
+            this._buttonElement.textContent = 'START'
         }
     }
 
@@ -75,7 +79,7 @@ export class State {
 
     togglePause() {
         if (!this.running || this.finished) {
-            return
+            // return
         }
         this.paused = !this.paused
     }
