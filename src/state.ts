@@ -64,6 +64,7 @@ export class State {
     }
 
     setupEventListeners() {
+        this._buttonElement.addEventListener('click', () => this.start())
         window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 this.togglePause()
