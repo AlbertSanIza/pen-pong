@@ -35,10 +35,6 @@ export class State {
         this._aiScoreElement.textContent = score.toString()
     }
 
-    increaseAiScore() {
-        this._aiScore++
-    }
-
     start() {
         this.started = true
         this.paused = false
