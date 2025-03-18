@@ -1,22 +1,37 @@
 export class State {
+    private _pausedElement: HTMLElement
+    private _playerScoreElement: HTMLElement
+    private _aiScoreElement: HTMLElement
     running: boolean
-    paused: boolean
+    private _paused: boolean
     finished: boolean
     private _maxScore: number
     private _playerScore: number
     private _aiScore: number
-    private _playerScoreElement: HTMLElement
-    private _aiScoreElement: HTMLElement
 
     constructor(maxScore: number = 10) {
+        this._pausedElement = document.getElementById('state-paused') as HTMLElement
+        this._playerScoreElement = document.getElementById('state-player-score') as HTMLElement
+        this._aiScoreElement = document.getElementById('state-ai-score') as HTMLElement
         this._maxScore = maxScore
         this.running = false
-        this.paused = false
+        this._paused = false
         this.finished = false
         this._playerScore = 0
         this._aiScore = 0
-        this._playerScoreElement = document.getElementById('state-player-score') as HTMLElement
-        this._aiScoreElement = document.getElementById('state-ai-score') as HTMLElement
+    }
+
+    get paused() {
+        return this._paused
+    }
+
+    set paused(value: boolean) {
+        this._paused = value
+        if (value) {
+            this._pausedElement.classList.remove('hidden')
+        } else {
+            this._pausedElement.classList.add('hidden')
+        }
     }
 
     get maxScore() {
