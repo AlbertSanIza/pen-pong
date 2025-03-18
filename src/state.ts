@@ -89,6 +89,7 @@ export class State {
 
     start() {
         this.running = true
+        this.paused = false
         if (this._startCallback) {
             this._startCallback()
         }
@@ -99,6 +100,9 @@ export class State {
             return
         }
         this.paused = !this.paused
+        if (!this.paused && this._startCallback) {
+            this._startCallback()
+        }
     }
 
     reset() {
