@@ -4,6 +4,8 @@ export class State {
     finished: boolean
     playerScore: number
     aiScore: number
+    playerScoreElement: HTMLElement
+    aiScoreElement: HTMLElement
 
     constructor() {
         this.started = false
@@ -11,6 +13,8 @@ export class State {
         this.finished = false
         this.playerScore = 0
         this.aiScore = 0
+        this.playerScoreElement = document.getElementById('player-score') as HTMLElement
+        this.aiScoreElement = document.getElementById('ai-score') as HTMLElement
     }
 
     start() {
