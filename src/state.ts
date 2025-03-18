@@ -31,9 +31,9 @@ export class State {
     }
 
     set running(value: boolean) {
-        console.log('🚀 ~ State ~ setrunning ~ value:', value)
         this._running = value
         if (value) {
+            this._buttonElement.classList.add('hidden')
             this._resetButtonElement.classList.remove('hidden')
         } else {
             // this._buttonElement.classList.add('hidden')
@@ -88,9 +88,9 @@ export class State {
     }
 
     start() {
-        this._running = true
-        this.paused = false
-        this.finished = false
+        this.running = true
+        // this.paused = false
+        // this.finished = false
     }
 
     togglePause() {
