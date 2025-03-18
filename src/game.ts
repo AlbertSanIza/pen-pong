@@ -43,9 +43,7 @@ class Game {
 
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
-        this.state.onStart(() => {
-            console.log('Game started')
-        })
+        this.state.onStart(() => this.gameLoop())
     }
 
     resetBall() {
@@ -56,6 +54,12 @@ class Game {
             (Math.random() * 2 - 1) * 0.5,
             BALL_SPEED
         )
+    }
+
+    gameLoop() {
+        if (this.state.running && !this.state.paused && !this.state.finished) {
+            requestAnimationFrame(() => this.gameLoop())
+        }
     }
 }
 
