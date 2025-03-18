@@ -1,8 +1,11 @@
+import { Ball } from './ball'
 import { Paddle } from './paddle'
 import { State } from './state'
 import './style.css'
 
 const PADDlE_WIDTH = 20
+const BALL_RADIUS = 10
+const BALL_SPEED = 5
 
 class Game {
     state: State
@@ -11,6 +14,7 @@ class Game {
     paddleHeight!: number
     playerPaddle!: Paddle
     aiPaddle!: Paddle
+    ball!: Ball
 
     constructor() {
         this.state = new State()
@@ -27,6 +31,7 @@ class Game {
             this.paddleHeight,
             2
         )
+        this.resetBall()
     }
 
     resize() {
@@ -41,6 +46,16 @@ class Game {
         this.state.onStart(() => {
             console.log('Game started')
         })
+    }
+
+    resetBall() {
+        this.ball = new Ball(
+            { x: this.canvas.width / 2, y: this.canvas.height / 2 },
+            BALL_RADIUS,
+            Math.random() > 0.5 ? 1 : -1,
+            (Math.random() * 2 - 1) * 0.5,
+            BALL_SPEED
+        )
     }
 }
 
