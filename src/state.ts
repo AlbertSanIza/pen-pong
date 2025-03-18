@@ -15,8 +15,8 @@ export class State {
         this.finished = false
         this._playerScore = 0
         this._aiScore = 0
-        this._playerScoreElement = document.getElementById('player-score') as HTMLElement
-        this._aiScoreElement = document.getElementById('ai-score') as HTMLElement
+        this._playerScoreElement = document.getElementById('state-player-score') as HTMLElement
+        this._aiScoreElement = document.getElementById('state-ai-score') as HTMLElement
     }
 
     get maxScore() {
