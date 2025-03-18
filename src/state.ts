@@ -26,6 +26,21 @@ export class State {
         this.setupEventListeners()
     }
 
+    get running() {
+        return this._running
+    }
+
+    set running(value: boolean) {
+        console.log('🚀 ~ State ~ setrunning ~ value:', value)
+        this._running = value
+        if (value) {
+            this._resetButtonElement.classList.remove('hidden')
+        } else {
+            // this._buttonElement.classList.add('hidden')
+            // this._buttonElement.classList.remove('hidden')
+        }
+    }
+
     get paused() {
         return this._paused
     }
@@ -80,7 +95,7 @@ export class State {
 
     togglePause() {
         if (!this._running || this.finished) {
-            // return
+            return
         }
         this.paused = !this.paused
     }
