@@ -6,6 +6,7 @@ import './style.css'
 const PADDlE_WIDTH = 20
 const BALL_RADIUS = 20
 const BALL_SPEED = 8
+const AUTO_PLAY = true
 
 class Game {
     state: State
@@ -73,6 +74,23 @@ class Game {
 
         if (this.ball.collideY(0) || this.ball.collideY(this.canvas.height)) {
             this.ball.bounceY()
+        }
+
+        if (AUTO_PLAY) {
+            const playerCenter = this.playerPaddle.position.y + this.paddleHeight / 2
+            if (this.ball.position.y > playerCenter) {
+                this.playerPaddle.position.y = Math.min(this.playerPaddle.position.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
+            }
+            if (this.ball.position.y < playerCenter) {
+                this.playerPaddle.position.y = Math.max(this.playerPaddle.position.y - this.playerPaddle.speed, 0)
+            }
+        }
+
+        const aiCenter = this.aiPaddle.position.y + this.paddleHeight / 2
+        if (this.ball.position.y > aiCenter) {
+            this.aiPaddle.position.y = Math.min(this.aiPaddle.position.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
+        } else if (this.ball.position.y < aiCenter) {
+            this.aiPaddle.position.y = Math.max(this.aiPaddle.position.y - this.aiPaddle.speed, 0)
         }
     }
 
