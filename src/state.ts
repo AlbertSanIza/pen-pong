@@ -35,6 +35,9 @@ export class State {
         if (value) {
             this._buttonElement.classList.add('hidden')
             this._resetButtonElement.classList.remove('hidden')
+        } else {
+            this._buttonElement.classList.remove('hidden')
+            this._resetButtonElement.classList.add('hidden')
         }
     }
 
@@ -75,6 +78,7 @@ export class State {
 
     setupEventListeners() {
         this._buttonElement.addEventListener('click', () => this.start())
+        this._resetButtonElement.addEventListener('click', () => this.reset())
         window.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 this.togglePause()
@@ -83,11 +87,7 @@ export class State {
     }
 
     start() {
-        // if (this.paused) {
-        //     this.paused = false
-        //     return
-        // }
-        // this.running = true
+        this.running = true
     }
 
     togglePause() {
@@ -98,10 +98,10 @@ export class State {
     }
 
     reset() {
-        // this._running = false
-        // this.paused = false
-        // this.finished = false
-        // this.resetScores()
+        this.running = false
+        this.paused = false
+        this.finished = false
+        this.resetScores()
     }
 
     resetScores() {
