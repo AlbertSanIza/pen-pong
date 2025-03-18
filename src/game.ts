@@ -104,14 +104,18 @@ class Game {
         // Player paddle movement
         if (AUTO_PLAY) {
             const playerDiff = this.ball.position.y - this.playerPaddle.center
-            this.playerPaddle.position.y += Math.sign(playerDiff) * Math.min(this.playerPaddle.speed, Math.abs(playerDiff))
-            this.playerPaddle.position.y = Math.max(Math.min(this.playerPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
+            if (Math.abs(playerDiff) > 10) {
+                this.playerPaddle.position.y += Math.sign(playerDiff) * Math.min(this.playerPaddle.speed, Math.abs(playerDiff))
+                this.playerPaddle.position.y = Math.max(Math.min(this.playerPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
+            }
         }
 
         // AI paddle movement
         const aiDiff = this.ball.position.y - this.aiPaddle.center
-        this.aiPaddle.position.y += Math.sign(aiDiff) * Math.min(this.aiPaddle.speed, Math.abs(aiDiff))
-        this.aiPaddle.position.y = Math.max(Math.min(this.aiPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
+        if (Math.abs(aiDiff) > 10) {
+            this.aiPaddle.position.y += Math.sign(aiDiff) * Math.min(this.aiPaddle.speed, Math.abs(aiDiff))
+            this.aiPaddle.position.y = Math.max(Math.min(this.aiPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
+        }
     }
 
     draw() {
