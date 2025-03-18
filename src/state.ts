@@ -87,9 +87,11 @@ export class State {
     }
 
     start() {
+        if (this.paused) {
+            this.paused = false
+            return
+        }
         this.running = true
-        // this.paused = false
-        // this.finished = false
     }
 
     togglePause() {
