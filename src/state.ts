@@ -1,5 +1,5 @@
 export class State {
-    started: boolean
+    running: boolean
     paused: boolean
     finished: boolean
     private _maxScore: number
@@ -10,7 +10,7 @@ export class State {
 
     constructor(maxScore: number = 10) {
         this._maxScore = maxScore
-        this.started = false
+        this.running = false
         this.paused = false
         this.finished = false
         this._playerScore = 0
@@ -42,7 +42,7 @@ export class State {
     }
 
     start() {
-        this.started = true
+        this.running = true
         this.paused = false
         this.finished = false
     }
@@ -56,7 +56,7 @@ export class State {
     }
 
     reset() {
-        this.started = false
+        this.running = false
         this.paused = false
         this.finished = false
         this.resetScores()
