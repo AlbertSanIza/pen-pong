@@ -4,7 +4,7 @@ export class State {
     private _pausedElement: HTMLElement
     private _playerScoreElement: HTMLElement
     private _aiScoreElement: HTMLElement
-    running: boolean
+    private _running: boolean
     private _paused: boolean
     finished: boolean
     private _maxScore: number
@@ -18,7 +18,7 @@ export class State {
         this._playerScoreElement = document.getElementById('state-player-score') as HTMLElement
         this._aiScoreElement = document.getElementById('state-ai-score') as HTMLElement
         this._maxScore = maxScore
-        this.running = false
+        this._running = false
         this._paused = false
         this.finished = false
         this._playerScore = 0
@@ -72,20 +72,20 @@ export class State {
     }
 
     start() {
-        this.running = true
+        this._running = true
         this.paused = false
         this.finished = false
     }
 
     togglePause() {
-        if (!this.running || this.finished) {
+        if (!this._running || this.finished) {
             // return
         }
         this.paused = !this.paused
     }
 
     reset() {
-        this.running = false
+        this._running = false
         this.paused = false
         this.finished = false
         this.resetScores()
