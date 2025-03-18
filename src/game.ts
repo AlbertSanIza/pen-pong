@@ -53,7 +53,7 @@ class Game {
             BALL_RADIUS,
             Math.random() > 0.5 ? 1 : -1,
             (Math.random() * 2 - 1) * 0.5,
-            BALL_SPEED
+            AUTO_PLAY ? BALL_SPEED * 2 : BALL_SPEED
         )
     }
 
@@ -65,6 +65,9 @@ class Game {
         if (collideLeft || this.ball.collideX(this.canvas.width)) {
             if (collideLeft) {
                 this.state.aiScore++
+                if (AUTO_PLAY) {
+                    this.playerPaddle.increaseSpeed()
+                }
             } else {
                 this.state.playerScore++
                 this.aiPaddle.increaseSpeed()
@@ -74,6 +77,28 @@ class Game {
 
         if (this.ball.collideY(0) || this.ball.collideY(this.canvas.height)) {
             this.ball.bounceY()
+        }
+
+        if (
+            this.ball.collideLine(
+                { x: this.playerPaddle.width, y: this.playerPaddle.position.y },
+                { x: this.playerPaddle.width, y: this.playerPaddle.position.y + this.paddleHeight }
+            )
+        ) {
+            this.ball.bounceX()
+            this.ball.position.x = this.playerPaddle.width + this.ball.radius
+            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+        }
+
+        if (
+            this.ball.collideLine(
+                { x: this.canvas.width - this.aiPaddle.width, y: this.aiPaddle.position.y },
+                { x: this.canvas.width - this.aiPaddle.width, y: this.aiPaddle.position.y + this.paddleHeight }
+            )
+        ) {
+            this.ball.bounceX()
+            this.ball.position.x = this.canvas.width - this.aiPaddle.width - this.ball.radius
+            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
         }
 
         if (AUTO_PLAY) {
