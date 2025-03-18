@@ -4,8 +4,8 @@ import { State } from './state'
 import './style.css'
 
 const PADDlE_WIDTH = 20
-const BALL_RADIUS = 10
-const BALL_SPEED = 5
+const BALL_RADIUS = 20
+const BALL_SPEED = 8
 
 class Game {
     state: State
@@ -56,8 +56,43 @@ class Game {
         )
     }
 
+    update() {
+        this.ball.move()
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+        // Draw center line
+        this.ctx.setLineDash([5, 3])
+        this.ctx.strokeStyle = 'oklch(0.623 0.214 259.815)'
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.canvas.width / 2, 0)
+        this.ctx.lineTo(this.canvas.width / 2, this.canvas.height)
+        this.ctx.stroke()
+        this.ctx.setLineDash([])
+
+        // Draw paddles
+        this.ctx.fillStyle = '#155dfc'
+        this.ctx.fillRect(0, this.playerPaddle.position.y, this.playerPaddle.width, this.playerPaddle.height)
+        this.ctx.fillRect(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y, this.aiPaddle.width, this.aiPaddle.height)
+
+        // Draw ball with glow effect
+        this.ctx.save()
+        this.ctx.shadowBlur = 50
+        this.ctx.shadowColor = '#155dfc'
+        this.ctx.beginPath()
+        this.ctx.arc(this.ball.position.x, this.ball.position.y, this.ball.radius, 0, Math.PI * 2)
+        this.ctx.fillStyle = '#155dfc'
+        this.ctx.fill()
+        this.ctx.closePath()
+        this.ctx.restore()
+    }
+
     gameLoop() {
         if (this.state.running && !this.state.paused && !this.state.finished) {
+            this.update()
+            this.draw()
             requestAnimationFrame(() => this.gameLoop())
         }
     }
