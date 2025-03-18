@@ -8,6 +8,17 @@ class Game {
 
     constructor() {
         this.state = new State()
+        this.init()
+    }
+
+    init() {
+        this.resize()
+    }
+
+    resize() {
+        const { width, height } = this.canvas.getBoundingClientRect()
+        this.canvas.width = width
+        this.canvas.height = height
     }
 }
 
