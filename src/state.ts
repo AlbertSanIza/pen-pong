@@ -2,12 +2,14 @@ export class State {
     started: boolean
     paused: boolean
     finished: boolean
+    private _maxScore: number
     private _playerScore: number
     private _aiScore: number
     private _playerScoreElement: HTMLElement
     private _aiScoreElement: HTMLElement
 
-    constructor() {
+    constructor(maxScore: number = 10) {
+        this._maxScore = maxScore
         this.started = false
         this.paused = false
         this.finished = false
@@ -15,6 +17,10 @@ export class State {
         this._aiScore = 0
         this._playerScoreElement = document.getElementById('player-score') as HTMLElement
         this._aiScoreElement = document.getElementById('ai-score') as HTMLElement
+    }
+
+    get maxScore() {
+        return this._maxScore
     }
 
     get playerScore() {
