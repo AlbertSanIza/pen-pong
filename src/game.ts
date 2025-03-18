@@ -101,20 +101,17 @@ class Game {
             this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
         }
 
+        // Player paddle movement
         if (AUTO_PLAY) {
-            if (this.ball.position.y > this.playerPaddle.center) {
-                this.playerPaddle.position.y = Math.min(this.playerPaddle.position.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
-            }
-            if (this.ball.position.y < this.playerPaddle.center) {
-                this.playerPaddle.position.y = Math.max(this.playerPaddle.position.y - this.playerPaddle.speed, 0)
-            }
+            const playerDiff = this.ball.position.y - this.playerPaddle.center
+            this.playerPaddle.position.y += Math.sign(playerDiff) * Math.min(this.playerPaddle.speed, Math.abs(playerDiff))
+            this.playerPaddle.position.y = Math.max(Math.min(this.playerPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
         }
 
-        if (this.ball.position.y > this.aiPaddle.center) {
-            this.aiPaddle.position.y = Math.min(this.aiPaddle.position.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
-        } else if (this.ball.position.y < this.aiPaddle.center) {
-            this.aiPaddle.position.y = Math.max(this.aiPaddle.position.y - this.aiPaddle.speed, 0)
-        }
+        // AI paddle movement
+        const aiDiff = this.ball.position.y - this.aiPaddle.center
+        this.aiPaddle.position.y += Math.sign(aiDiff) * Math.min(this.aiPaddle.speed, Math.abs(aiDiff))
+        this.aiPaddle.position.y = Math.max(Math.min(this.aiPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
     }
 
     draw() {
