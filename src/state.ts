@@ -46,12 +46,8 @@ export class State {
         this._paused = value
         if (value) {
             this._pausedElement.classList.remove('hidden')
-            this._buttonElement.textContent = 'RESUME'
-            this._buttonElement.classList.remove('hidden')
         } else {
             this._pausedElement.classList.add('hidden')
-            this._buttonElement.textContent = 'START'
-            this._buttonElement.classList.add('hidden')
         }
     }
 
@@ -87,25 +83,25 @@ export class State {
     }
 
     start() {
-        if (this.paused) {
-            this.paused = false
-            return
-        }
-        this.running = true
+        // if (this.paused) {
+        //     this.paused = false
+        //     return
+        // }
+        // this.running = true
     }
 
     togglePause() {
-        if (!this._running || this.finished) {
+        if (!this.running || this.finished) {
             return
         }
         this.paused = !this.paused
     }
 
     reset() {
-        this._running = false
-        this.paused = false
-        this.finished = false
-        this.resetScores()
+        // this._running = false
+        // this.paused = false
+        // this.finished = false
+        // this.resetScores()
     }
 
     resetScores() {
