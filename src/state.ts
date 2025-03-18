@@ -35,9 +35,6 @@ export class State {
         if (value) {
             this._buttonElement.classList.add('hidden')
             this._resetButtonElement.classList.remove('hidden')
-        } else {
-            // this._buttonElement.classList.add('hidden')
-            // this._buttonElement.classList.remove('hidden')
         }
     }
 
@@ -50,9 +47,11 @@ export class State {
         if (value) {
             this._pausedElement.classList.remove('hidden')
             this._buttonElement.textContent = 'RESUME'
+            this._buttonElement.classList.remove('hidden')
         } else {
             this._pausedElement.classList.add('hidden')
             this._buttonElement.textContent = 'START'
+            this._buttonElement.classList.add('hidden')
         }
     }
 
