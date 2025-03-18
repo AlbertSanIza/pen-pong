@@ -47,12 +47,11 @@ export class State {
         this.finished = false
     }
 
-    pause() {
-        this.paused = true
-    }
-
-    unpause() {
-        this.paused = false
+    togglePause() {
+        if (!this.running || this.finished) {
+            return
+        }
+        this.paused = !this.paused
     }
 
     reset() {
