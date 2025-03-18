@@ -102,19 +102,17 @@ class Game {
         }
 
         if (AUTO_PLAY) {
-            const playerCenter = this.playerPaddle.position.y + this.paddleHeight / 2
-            if (this.ball.position.y > playerCenter) {
+            if (this.ball.position.y > this.playerPaddle.center) {
                 this.playerPaddle.position.y = Math.min(this.playerPaddle.position.y + this.playerPaddle.speed, this.canvas.height - this.paddleHeight)
             }
-            if (this.ball.position.y < playerCenter) {
+            if (this.ball.position.y < this.playerPaddle.center) {
                 this.playerPaddle.position.y = Math.max(this.playerPaddle.position.y - this.playerPaddle.speed, 0)
             }
         }
 
-        const aiCenter = this.aiPaddle.position.y + this.paddleHeight / 2
-        if (this.ball.position.y > aiCenter) {
+        if (this.ball.position.y > this.aiPaddle.center) {
             this.aiPaddle.position.y = Math.min(this.aiPaddle.position.y + this.aiPaddle.speed, this.canvas.height - this.paddleHeight)
-        } else if (this.ball.position.y < aiCenter) {
+        } else if (this.ball.position.y < this.aiPaddle.center) {
             this.aiPaddle.position.y = Math.max(this.aiPaddle.position.y - this.aiPaddle.speed, 0)
         }
     }
