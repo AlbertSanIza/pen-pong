@@ -1,5 +1,6 @@
 import { Ball } from './ball'
 import { Paddle } from './paddle'
+import { ParticleSystem } from './particle-system'
 import { State } from './state'
 import './style.css'
 
@@ -16,6 +17,7 @@ class Game {
     playerPaddle!: Paddle
     aiPaddle!: Paddle
     ball!: Ball
+    particles!: ParticleSystem
 
     constructor() {
         this.state = new State()
@@ -33,6 +35,7 @@ class Game {
             2
         )
         this.resetBall()
+        this.particles = new ParticleSystem(this.ctx)
     }
 
     resize() {
@@ -60,6 +63,11 @@ class Game {
     update() {
         this.ball.move()
 
+        for (let i = 0; i < 3; i++) {
+            this.particles.particles.push(this.particles.createParticle(this.ball.position, -this.ball.dx, -this.ball.dy))
+        }
+        this.particles.update()
+
         // Wall X collision
         const collideLeft = this.ball.collideX(0)
         if (collideLeft || this.ball.collideX(this.canvas.width)) {
@@ -72,6 +80,7 @@ class Game {
                 this.state.playerScore++
                 this.aiPaddle.increaseSpeed()
             }
+            this.particles.createExplosion(this.ball.position)
             this.resetBall()
         }
 
@@ -134,6 +143,9 @@ class Game {
         this.ctx.fillStyle = '#155dfc'
         this.ctx.fillRect(0, this.playerPaddle.position.y, this.playerPaddle.width, this.playerPaddle.height)
         this.ctx.fillRect(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y, this.aiPaddle.width, this.aiPaddle.height)
+
+        // Draw particles
+        this.particles.draw()
 
         // Draw ball with glow effect
         this.ctx.save()
