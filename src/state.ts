@@ -19,6 +19,7 @@ export class State {
         this.finished = false
         this._playerScore = 0
         this._aiScore = 0
+        this.setupEventListeners()
     }
 
     get paused() {
@@ -54,6 +55,14 @@ export class State {
     set aiScore(score: number) {
         this._aiScore = score
         this._aiScoreElement.textContent = score.toString()
+    }
+
+    setupEventListeners() {
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.togglePause()
+            }
+        })
     }
 
     start() {
