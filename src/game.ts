@@ -58,6 +58,22 @@ class Game {
 
     update() {
         this.ball.move()
+
+        // Wall X collision
+        const collideLeft = this.ball.collideX(0)
+        if (collideLeft || this.ball.collideX(this.canvas.width)) {
+            if (collideLeft) {
+                this.state.aiScore++
+            } else {
+                this.state.playerScore++
+                this.aiPaddle.increaseSpeed()
+            }
+            this.resetBall()
+        }
+
+        if (this.ball.collideY(0) || this.ball.collideY(this.canvas.height)) {
+            this.ball.bounceY()
+        }
     }
 
     draw() {
