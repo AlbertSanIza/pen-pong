@@ -17,6 +17,10 @@ export class Paddle {
         return this._speed
     }
 
+    get center() {
+        return this.position.y + this.height / 2
+    }
+
     increaseSpeed() {
         this._speed += 0.2
     }
