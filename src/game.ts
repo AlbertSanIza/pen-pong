@@ -24,6 +24,9 @@ class Game {
 
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
+        this.state.onStart(() => {
+            console.log('Game started')
+        })
     }
 }
 

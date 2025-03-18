@@ -10,6 +10,7 @@ export class State {
     private _maxScore: number
     private _playerScore: number
     private _aiScore: number
+    private _startCallback!: () => void
 
     constructor(maxScore: number = 10) {
         this._buttonElement = document.getElementById('state-button') as HTMLElement
@@ -88,6 +89,9 @@ export class State {
 
     start() {
         this.running = true
+        if (this._startCallback) {
+            this._startCallback()
+        }
     }
 
     togglePause() {
@@ -107,5 +111,9 @@ export class State {
     resetScores() {
         this.playerScore = 0
         this.aiScore = 0
+    }
+
+    onStart(callback: () => void) {
+        this._startCallback = callback
     }
 }
