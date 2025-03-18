@@ -11,6 +11,7 @@ export class State {
     private _playerScore: number
     private _aiScore: number
     private _startCallback!: () => void
+    private _resetCallback!: () => void
 
     constructor(maxScore: number = 10) {
         this._buttonElement = document.getElementById('state-button') as HTMLElement
@@ -110,6 +111,7 @@ export class State {
         this.paused = false
         this.finished = false
         this.resetScores()
+        this._resetCallback?.()
     }
 
     resetScores() {
@@ -119,5 +121,9 @@ export class State {
 
     onStart(callback: () => void) {
         this._startCallback = callback
+    }
+
+    onReset(callback: () => void) {
+        this._resetCallback = callback
     }
 }
