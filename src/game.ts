@@ -24,11 +24,6 @@ class Game {
 
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
-        window.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                this.state.togglePause()
-            }
-        })
     }
 }
 
