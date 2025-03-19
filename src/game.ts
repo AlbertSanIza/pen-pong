@@ -1,6 +1,7 @@
 import { Ball } from './ball'
 import { Paddle } from './paddle'
 import { ParticleSystem } from './particle-system'
+import { Point } from './point'
 import { State } from './state'
 import './style.css'
 
@@ -52,7 +53,7 @@ class Game {
 
     resetBall() {
         this.ball = new Ball(
-            { x: this.canvas.width / 2, y: this.canvas.height / 2, past: { x: this.canvas.width / 2, y: this.canvas.height / 2 } },
+            new Point(this.canvas.width / 2, this.canvas.height / 2),
             BALL_RADIUS,
             Math.random() > 0.5 ? 1 : -1,
             (Math.random() * 2 - 1) * 0.5,
@@ -62,6 +63,7 @@ class Game {
 
     update() {
         this.ball.move()
+        console.log(this.ball.position)
 
         for (let i = 0; i < 3; i++) {
             this.particles.particles.push(this.particles.createParticle(this.ball.position, -this.ball.dx, -this.ball.dy))
@@ -77,8 +79,8 @@ class Game {
 
         if (
             this.ball.collideLine(
-                { x: this.playerPaddle.width, y: this.playerPaddle.position.y },
-                { x: this.playerPaddle.width, y: this.playerPaddle.position.y + this.paddleHeight }
+                new Point(this.playerPaddle.width, this.playerPaddle.position.y),
+                new Point(this.playerPaddle.width, this.playerPaddle.position.y + this.paddleHeight)
             )
         ) {
             this.ball.bounceX()
@@ -88,8 +90,8 @@ class Game {
 
         if (
             this.ball.collideLine(
-                { x: this.canvas.width - this.aiPaddle.width, y: this.aiPaddle.position.y },
-                { x: this.canvas.width - this.aiPaddle.width, y: this.aiPaddle.position.y + this.paddleHeight }
+                new Point(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y),
+                new Point(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y + this.paddleHeight)
             )
         ) {
             this.ball.bounceX()

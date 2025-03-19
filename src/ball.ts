@@ -1,4 +1,4 @@
-import { Point } from './types'
+import { Point } from './point'
 
 export class Ball {
     position: Point
@@ -8,7 +8,7 @@ export class Ball {
     speed: number
 
     constructor(position: Point, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
-        this.position = { ...position, past: { ...position } }
+        this.position = position
         this.radius = radius
         this.dx = dx
         this.dy = dy
