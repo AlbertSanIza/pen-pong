@@ -65,12 +65,20 @@ export class Ball {
         return false
     }
 
+    bounceUp() {
+        this.dy = -Math.abs(this.dy)
+    }
+
     bounceDown() {
         this.dy = Math.abs(this.dy)
     }
 
-    bounceUp() {
-        this.dy = -Math.abs(this.dy)
+    bounceLeft() {
+        this.dx = -Math.abs(this.dx)
+    }
+
+    bounceRight() {
+        this.dx = Math.abs(this.dx)
     }
 
     bounceX() {
