@@ -84,8 +84,11 @@ class Game {
             this.resetBall()
         }
 
-        if (this.ball.collideY(0) || this.ball.collideY(this.canvas.height)) {
-            this.ball.bounceY()
+        if (this.ball.collideWallTop(0)) {
+            this.ball.bounceDown()
+        }
+        if (this.ball.collideWallBottom(this.canvas.height)) {
+            this.ball.bounceUp()
         }
 
         if (

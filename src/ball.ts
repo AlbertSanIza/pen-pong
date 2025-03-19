@@ -24,8 +24,12 @@ export class Ball {
         return this.position.x + this.radius >= x && this.position.x - this.radius <= x
     }
 
-    collideY(y: number): boolean {
-        return this.position.y + this.radius - 1 >= y && this.position.y - this.radius + 1 <= y
+    collideWallTop(y: number): boolean {
+        return this.position.y - this.radius <= y
+    }
+
+    collideWallBottom(y: number): boolean {
+        return this.position.y + this.radius >= y
     }
 
     collideLine(pointA: Point, pointB: Point): boolean {
@@ -61,8 +65,12 @@ export class Ball {
         return false
     }
 
-    bounceY() {
-        this.dy *= -1
+    bounceDown() {
+        this.dy = Math.abs(this.dy)
+    }
+
+    bounceUp() {
+        this.dy = -Math.abs(this.dy)
     }
 
     bounceX() {
