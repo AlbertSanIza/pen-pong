@@ -8,7 +8,7 @@ export class Ball {
     speed: number
 
     constructor(position: Point, radius: number, dx: number = 0, dy: number = 0, speed: number = 0) {
-        this.position = position
+        this.position = { ...position, past: { ...position } }
         this.radius = radius
         this.dx = dx
         this.dy = dy

@@ -52,7 +52,7 @@ class Game {
 
     resetBall() {
         this.ball = new Ball(
-            { x: this.canvas.width / 2, y: this.canvas.height / 2 },
+            { x: this.canvas.width / 2, y: this.canvas.height / 2, past: { x: this.canvas.width / 2, y: this.canvas.height / 2 } },
             BALL_RADIUS,
             Math.random() > 0.5 ? 1 : -1,
             (Math.random() * 2 - 1) * 0.5,
@@ -68,27 +68,11 @@ class Game {
         }
         this.particles.update()
 
-        // Wall X collision
-        const collideLeft = this.ball.collideX(0)
-        if (collideLeft || this.ball.collideX(this.canvas.width)) {
-            if (collideLeft) {
-                this.state.aiScore++
-                if (AUTO_PLAY) {
-                    this.playerPaddle.increaseSpeed()
-                }
-            } else {
-                this.state.playerScore++
-                this.aiPaddle.increaseSpeed()
-            }
-            this.particles.createExplosion(this.ball.position)
-            this.resetBall()
-        }
-
+        // Wall Y Collision
         if (this.ball.collideWallTop(0)) {
-            this.ball.bounceDown()
+            // if the ball hits the top wall, we need to "go back in time" to the exact point of collision, reverse the direction, and then move it back down the exact distance it moved up
         }
         if (this.ball.collideWallBottom(this.canvas.height)) {
-            this.ball.bounceUp()
         }
 
         if (
@@ -111,6 +95,27 @@ class Game {
             this.ball.bounceX()
             this.ball.position.x = this.canvas.width - this.aiPaddle.width - this.ball.radius
             this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+        }
+
+        // // Paddle Collision
+        // if (this.ball.collideWallBottom(this.playerPaddle.position.y) || this.ball.collideWallBottom(this.playerPaddle.position.y + this.paddleHeight)) {
+        //     console.log('inside paddle')
+        // }
+
+        // Wall X Collision
+        const collideLeft = this.ball.collideX(0)
+        if (collideLeft || this.ball.collideX(this.canvas.width)) {
+            if (collideLeft) {
+                this.state.aiScore++
+                if (AUTO_PLAY) {
+                    this.playerPaddle.increaseSpeed()
+                }
+            } else {
+                this.state.playerScore++
+                this.aiPaddle.increaseSpeed()
+            }
+            this.particles.createExplosion(this.ball.position)
+            this.resetBall()
         }
 
         // Player paddle movement
