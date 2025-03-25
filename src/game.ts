@@ -37,6 +37,7 @@ class Game {
         )
         this.resetBall()
         this.particles = new ParticleSystem(this.ctx)
+        this.draw()
     }
 
     resize() {
@@ -49,6 +50,7 @@ class Game {
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
         this.state.onStart(() => this.gameLoop())
+        this.state.onReset(() => this.init())
     }
 
     resetBall() {

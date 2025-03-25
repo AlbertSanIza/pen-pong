@@ -91,9 +91,7 @@ export class State {
     start() {
         this.running = true
         this.paused = false
-        if (this._startCallback) {
-            this._startCallback()
-        }
+        this._startCallback?.()
     }
 
     togglePause() {
