@@ -102,29 +102,24 @@ class Game {
         if (
             this.ball.collideLine(
                 new Point(this.playerPaddle.width, this.playerPaddle.position.y),
-                new Point(this.playerPaddle.width, this.playerPaddle.position.y + this.paddleHeight)
+                new Point(this.playerPaddle.width, this.playerPaddle.position.y + this.playerPaddle.height)
             )
         ) {
             this.ball.bounceX()
             this.ball.position.x = this.playerPaddle.width + this.ball.radius
-            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+            this.ball.dy += ((this.ball.position.y - (this.playerPaddle.position.y + this.playerPaddle.height / 2)) / (this.playerPaddle.height / 2)) * 0.5
         }
 
         if (
             this.ball.collideLine(
                 new Point(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y),
-                new Point(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y + this.paddleHeight)
+                new Point(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y + this.aiPaddle.height)
             )
         ) {
             this.ball.bounceX()
             this.ball.position.x = this.canvas.width - this.aiPaddle.width - this.ball.radius
-            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.paddleHeight / 2)) / (this.paddleHeight / 2)) * 0.5
+            this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.aiPaddle.height / 2)) / (this.aiPaddle.height / 2)) * 0.5
         }
-
-        // // Paddle Collision
-        // if (this.ball.collideWallBottom(this.playerPaddle.position.y) || this.ball.collideWallBottom(this.playerPaddle.position.y + this.paddleHeight)) {
-        //     console.log('inside paddle')
-        // }
 
         // Wall X Collision
         const collideLeft = this.ball.collideX(0)
@@ -147,7 +142,7 @@ class Game {
             const playerDiff = this.ball.position.y - this.playerPaddle.center
             if (Math.abs(playerDiff) > 10) {
                 this.playerPaddle.position.y += Math.sign(playerDiff) * Math.min(this.playerPaddle.speed, Math.abs(playerDiff))
-                this.playerPaddle.position.y = Math.max(Math.min(this.playerPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
+                this.playerPaddle.position.y = Math.max(Math.min(this.playerPaddle.position.y, this.canvas.height - this.playerPaddle.height), 0)
             }
         }
 
@@ -155,7 +150,7 @@ class Game {
         const aiDiff = this.ball.position.y - this.aiPaddle.center
         if (Math.abs(aiDiff) > 10) {
             this.aiPaddle.position.y += Math.sign(aiDiff) * Math.min(this.aiPaddle.speed, Math.abs(aiDiff))
-            this.aiPaddle.position.y = Math.max(Math.min(this.aiPaddle.position.y, this.canvas.height - this.paddleHeight), 0)
+            this.aiPaddle.position.y = Math.max(Math.min(this.aiPaddle.position.y, this.canvas.height - this.aiPaddle.height), 0)
         }
     }
 
