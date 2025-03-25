@@ -28,9 +28,9 @@ class Game {
 
     init() {
         this.resize()
-        this.playerPaddle = new Paddle({ x: 0, y: this.canvas.height / 2 - this.paddleHeight / 2 }, PADDlE_WIDTH, this.paddleHeight, 2)
+        this.playerPaddle = new Paddle(new Point(0, this.canvas.height / 2 - this.paddleHeight / 2), PADDlE_WIDTH, this.paddleHeight, 2)
         this.aiPaddle = new Paddle(
-            { x: this.canvas.width - PADDlE_WIDTH, y: this.canvas.height / 2 - this.paddleHeight / 2 },
+            new Point(this.canvas.width - PADDlE_WIDTH, this.canvas.height / 2 - this.paddleHeight / 2),
             PADDlE_WIDTH,
             this.paddleHeight,
             2
