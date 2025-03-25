@@ -50,9 +50,22 @@ class Game {
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
         this.canvas.addEventListener('mousemove', (event) => {
+            if (AUTO_PLAY) {
+                return
+            }
             const rect = this.canvas.getBoundingClientRect()
             const relativeY = event.clientY - rect.top
-            this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
+            this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.playerPaddle.height / 2, this.canvas.height - this.playerPaddle.height))
+        })
+        this.canvas.addEventListener('touchmove', (event) => {
+            if (AUTO_PLAY) {
+                return
+            }
+            event.preventDefault()
+            const touch = event.touches[0]
+            const rect = this.canvas.getBoundingClientRect()
+            const relativeY = touch.clientY - rect.top
+            this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.playerPaddle.height / 2, this.canvas.height - this.playerPaddle.height))
         })
         this.state.onStart(() => this.gameLoop())
         this.state.onReset(() => this.init())
@@ -70,7 +83,6 @@ class Game {
 
     update() {
         this.ball.move()
-        console.log(this.ball.position)
 
         for (let i = 0; i < 3; i++) {
             this.particles.particles.push(this.particles.createParticle(this.ball.position, -this.ball.dx, -this.ball.dy))
