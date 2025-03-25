@@ -8,7 +8,7 @@ import './style.css'
 const PADDlE_WIDTH = 20
 const BALL_RADIUS = 20
 const BALL_SPEED = 8
-const AUTO_PLAY = true
+const AUTO_PLAY = false
 
 class Game {
     state: State
@@ -49,6 +49,11 @@ class Game {
 
     setupEventListeners() {
         window.addEventListener('resize', () => this.resize())
+        this.canvas.addEventListener('mousemove', (event) => {
+            const rect = this.canvas.getBoundingClientRect()
+            const relativeY = event.clientY - rect.top
+            this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.paddleHeight / 2, this.canvas.height - this.paddleHeight))
+        })
         this.state.onStart(() => this.gameLoop())
         this.state.onReset(() => this.init())
     }
