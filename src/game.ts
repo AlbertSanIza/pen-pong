@@ -74,9 +74,12 @@ class Game {
 
         // Wall Y Collision
         if (this.ball.collideWallTop(0)) {
-            // if the ball hits the top wall, we need to "go back in time" to the exact point of collision, reverse the direction, and then move it back down the exact distance it moved up
+            this.ball.position.y = this.ball.radius
+            this.ball.dy = Math.abs(this.ball.dy)
         }
         if (this.ball.collideWallBottom(this.canvas.height)) {
+            this.ball.position.y = this.canvas.height - this.ball.radius
+            this.ball.dy = -Math.abs(this.ball.dy)
         }
 
         if (
