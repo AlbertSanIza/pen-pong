@@ -1,4 +1,4 @@
-import { Point } from './types'
+import { Point } from './point'
 
 export class Paddle {
     position: Point

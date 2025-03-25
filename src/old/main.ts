@@ -1,7 +1,7 @@
-import { Ball } from './ball'
-import { Paddle } from './paddle'
-import { ParticleSystem } from './particle-system'
-import { Score } from './score'
+import { Ball } from '../ball'
+import { Paddle } from '../paddle'
+import { ParticleSystem } from '../particle-system'
+import { Score } from '../score'
 import { SoundSystem } from './sound-system'
 import './style.css'
 
