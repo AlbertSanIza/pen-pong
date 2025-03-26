@@ -20,16 +20,20 @@ export class Ball {
         this.position.y += this.dy * this.speed
     }
 
-    collideX(x: number): boolean {
-        return this.position.x + this.radius >= x && this.position.x - this.radius <= x
-    }
-
     collideWallTop(y: number): boolean {
         return this.position.y - this.radius <= y
     }
 
     collideWallBottom(y: number): boolean {
         return this.position.y + this.radius >= y
+    }
+
+    collideWallLeft(x: number): boolean {
+        return this.position.x - this.radius <= x
+    }
+
+    collideWallRight(x: number): boolean {
+        return this.position.x + this.radius >= x
     }
 
     collideLine(pointA: Point, pointB: Point): boolean {
