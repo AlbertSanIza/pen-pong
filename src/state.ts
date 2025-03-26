@@ -12,7 +12,9 @@ export class State {
     private _playerScore: number
     private _aiScore: number
     private _startCallback!: () => void
+    private _onPauseCallback!: () => void
     private _resetCallback!: () => void
+    private _onFinishCallback!: () => void
 
     constructor(maxScore: number = 10) {
         this._buttonElement = document.getElementById('state-button') as HTMLElement
@@ -56,6 +58,7 @@ export class State {
         } else {
             this._pausedElement.classList.add('hidden')
         }
+        this._onPauseCallback?.()
     }
 
     get finished() {
@@ -160,8 +163,16 @@ export class State {
         this._startCallback = callback
     }
 
+    onPause(callback: () => void) {
+        this._onPauseCallback = callback
+    }
+
     onReset(callback: () => void) {
         this._resetCallback = callback
+    }
+
+    onFinish(callback: () => void) {
+        this._onFinishCallback = callback
     }
 
     private getLetterScore() {

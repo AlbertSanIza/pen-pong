@@ -2,6 +2,7 @@ import { Ball } from './ball'
 import { Paddle } from './paddle'
 import { ParticleSystem } from './particle-system'
 import { Point } from './point'
+import { SoundSystem } from './sound-system'
 import { State } from './state'
 import './style.css'
 
@@ -19,6 +20,7 @@ class Game {
     aiPaddle!: Paddle
     ball!: Ball
     particles!: ParticleSystem
+    soundSystem: SoundSystem = new SoundSystem()
 
     constructor() {
         this.state = new State(1)
@@ -67,9 +69,23 @@ class Game {
             const relativeY = touch.clientY - rect.top
             this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.playerPaddle.height / 2, this.canvas.height - this.playerPaddle.height))
         })
-        this.state.onStart(() => this.gameLoop())
+        this.state.onStart(() => {
+            this.soundSystem.init()
+            this.gameLoop()
+        })
+        this.state.onPause(() => {
+            this.soundSystem.pause()
+        })
         this.state.onReset(() => {
             this.init()
+            this.draw()
+        })
+        this.state.onFinish(() => {
+            if (this.state.playerScore > this.state.aiScore) {
+                this.soundSystem.victory()
+            } else {
+                this.soundSystem.defeat()
+            }
             this.draw()
         })
     }
@@ -96,10 +112,12 @@ class Game {
         if (this.ball.collideWallTop(0)) {
             this.ball.position.y = this.ball.radius
             this.ball.dy = Math.abs(this.ball.dy)
+            this.soundSystem.wallHit()
         }
         if (this.ball.collideWallBottom(this.canvas.height)) {
             this.ball.position.y = this.canvas.height - this.ball.radius
             this.ball.dy = -Math.abs(this.ball.dy)
+            this.soundSystem.wallHit()
         }
 
         // Paddle Collision
@@ -112,6 +130,7 @@ class Game {
             this.ball.bounceX()
             this.ball.position.x = this.playerPaddle.width + this.ball.radius
             this.ball.dy += ((this.ball.position.y - (this.playerPaddle.position.y + this.playerPaddle.height / 2)) / (this.playerPaddle.height / 2)) * 0.5
+            this.soundSystem.paddleHit()
         }
         if (
             this.ball.collideLine(
@@ -122,6 +141,7 @@ class Game {
             this.ball.bounceX()
             this.ball.position.x = this.canvas.width - this.aiPaddle.width - this.ball.radius
             this.ball.dy += ((this.ball.position.y - (this.aiPaddle.position.y + this.aiPaddle.height / 2)) / (this.aiPaddle.height / 2)) * 0.5
+            this.soundSystem.paddleHit()
         }
 
         // Wall X Collision
@@ -132,12 +152,14 @@ class Game {
             }
             this.particles.createExplosion(this.ball.position)
             this.resetBall()
+            this.soundSystem.score()
         }
         if (this.ball.collideWallRight(this.canvas.width)) {
             this.state.playerScore++
             this.aiPaddle.increaseSpeed()
             this.particles.createExplosion(this.ball.position)
             this.resetBall()
+            this.soundSystem.score()
         }
 
         // Player paddle movement
