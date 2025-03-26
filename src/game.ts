@@ -21,9 +21,10 @@ class Game {
     particles!: ParticleSystem
 
     constructor() {
-        this.state = new State()
+        this.state = new State(1)
         this.init()
         this.setupEventListeners()
+        this.draw()
     }
 
     init() {
@@ -37,7 +38,6 @@ class Game {
         )
         this.resetBall()
         this.particles = new ParticleSystem(this.ctx)
-        this.draw()
     }
 
     resize() {
@@ -68,7 +68,10 @@ class Game {
             this.playerPaddle.position.y = Math.max(0, Math.min(relativeY - this.playerPaddle.height / 2, this.canvas.height - this.playerPaddle.height))
         })
         this.state.onStart(() => this.gameLoop())
-        this.state.onReset(() => this.init())
+        this.state.onReset(() => {
+            this.init()
+            this.draw()
+        })
     }
 
     resetBall() {

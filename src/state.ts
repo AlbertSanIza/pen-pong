@@ -118,6 +118,9 @@ export class State {
     }
 
     start() {
+        if (this.finished) {
+            this.reset()
+        }
         this.running = true
         this.paused = false
         this.finished = false
