@@ -23,7 +23,7 @@ class Game {
     soundSystem: SoundSystem = new SoundSystem()
 
     constructor() {
-        this.state = new State(1)
+        this.state = new State()
         this.init()
         this.setupEventListeners()
         this.draw()
