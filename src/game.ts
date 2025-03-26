@@ -74,18 +74,14 @@ class Game {
             this.gameLoop()
         })
         this.state.onPause(() => {
-            this.soundSystem.pause()
+            if (this.state.paused) {
+                this.soundSystem.unpause()
+            } else {
+                this.soundSystem.pause()
+            }
         })
         this.state.onReset(() => {
             this.init()
-            this.draw()
-        })
-        this.state.onFinish(() => {
-            if (this.state.playerScore > this.state.aiScore) {
-                this.soundSystem.victory()
-            } else {
-                this.soundSystem.defeat()
-            }
             this.draw()
         })
     }

@@ -14,7 +14,6 @@ export class State {
     private _startCallback!: () => void
     private _onPauseCallback!: () => void
     private _resetCallback!: () => void
-    private _onFinishCallback!: () => void
 
     constructor(maxScore: number = 10) {
         this._buttonElement = document.getElementById('state-button') as HTMLElement
@@ -169,10 +168,6 @@ export class State {
 
     onReset(callback: () => void) {
         this._resetCallback = callback
-    }
-
-    onFinish(callback: () => void) {
-        this._onFinishCallback = callback
     }
 
     private getLetterScore() {

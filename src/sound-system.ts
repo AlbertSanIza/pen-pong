@@ -35,12 +35,4 @@ export class SoundSystem {
     unpause() {
         this.synth.triggerAttackRelease('B4', '8n')
     }
-
-    victory() {
-        this.synth.triggerAttackRelease('C5', '8n')
-    }
-
-    defeat() {
-        this.synth.triggerAttackRelease('F2', '8n')
-    }
 }
