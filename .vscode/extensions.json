@@ -6,6 +6,7 @@
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
         "GitHub.copilot",
+        "github.vscode-github-actions",
         "PKief.material-icon-theme"
     ]
 }
