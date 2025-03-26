@@ -69,8 +69,10 @@ export class State {
             this._resultElement.classList.add('flex')
             const resultLetterElement = this._resultElement.querySelector('#state-result-letter') as HTMLElement
             const resultMessageElement = this._resultElement.querySelector('#state-result-message') as HTMLElement
-            resultLetterElement.innerText = this._playerScore >= this._maxScore ? 'You win!' : 'AI wins!'
-            resultMessageElement.innerText = this._playerScore >= this._maxScore ? 'Congratulations!' : 'Better luck next time!'
+            const score = this.getLetterScore()
+            resultLetterElement.innerText = score.letter
+            resultMessageElement.innerText = score.message
+            this._resultElement.style.color = score.color
         } else {
             this._resultElement.classList.add('hidden')
             this._resultElement.classList.remove('flex')
@@ -118,6 +120,7 @@ export class State {
     start() {
         this.running = true
         this.paused = false
+        this.finished = false
         this._startCallback?.()
     }
 
@@ -156,5 +159,27 @@ export class State {
 
     onReset(callback: () => void) {
         this._resetCallback = callback
+    }
+
+    private getLetterScore() {
+        const delta = this.playerScore - this.aiScore
+        if (delta <= 0) {
+            return { letter: 'F', message: 'I got no words...', color: 'red' }
+        }
+        const messages = ['Keep trying!', 'You need to practice more!', 'Not bad, but you can do better!', 'Almost there!', 'Good job!', 'Perfect!']
+        const score = Math.floor((delta / this.maxScore) * 100)
+        if (score < 20) {
+            return { letter: 'E', message: messages[0], color: 'oklch(0.646 0.222 41.116)' }
+        } else if (score < 40) {
+            return { letter: 'D', message: messages[1], color: 'oklch(0.666 0.179 58.318)' }
+        } else if (score < 60) {
+            return { letter: 'C', message: messages[2], color: 'oklch(0.795 0.184 86.047)' }
+        } else if (score < 80) {
+            return { letter: 'B', message: messages[3], color: 'oklch(0.905 0.182 98.111)' }
+        } else if (score < 100) {
+            return { letter: 'A-', message: messages[4], color: 'oklch(0.841 0.238 128.85)' }
+        } else {
+            return { letter: 'A+', message: messages[5], color: 'oklch(0.723 0.219 149.579)' }
+        }
     }
 }
