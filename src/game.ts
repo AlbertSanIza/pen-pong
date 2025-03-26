@@ -99,6 +99,7 @@ class Game {
             this.ball.dy = -Math.abs(this.ball.dy)
         }
 
+        // Paddle Collision
         if (
             this.ball.collideLine(
                 new Point(this.playerPaddle.width, this.playerPaddle.position.y),
@@ -109,7 +110,6 @@ class Game {
             this.ball.position.x = this.playerPaddle.width + this.ball.radius
             this.ball.dy += ((this.ball.position.y - (this.playerPaddle.position.y + this.playerPaddle.height / 2)) / (this.playerPaddle.height / 2)) * 0.5
         }
-
         if (
             this.ball.collideLine(
                 new Point(this.canvas.width - this.aiPaddle.width, this.aiPaddle.position.y),
@@ -122,17 +122,17 @@ class Game {
         }
 
         // Wall X Collision
-        const collideLeft = this.ball.collideX(0)
-        if (collideLeft || this.ball.collideX(this.canvas.width)) {
-            if (collideLeft) {
-                this.state.aiScore++
-                if (AUTO_PLAY) {
-                    this.playerPaddle.increaseSpeed()
-                }
-            } else {
-                this.state.playerScore++
-                this.aiPaddle.increaseSpeed()
+        if (this.ball.collideWallLeft(0)) {
+            this.state.aiScore++
+            if (AUTO_PLAY) {
+                this.playerPaddle.increaseSpeed()
             }
+            this.particles.createExplosion(this.ball.position)
+            this.resetBall()
+        }
+        if (this.ball.collideWallRight(this.canvas.width)) {
+            this.state.playerScore++
+            this.aiPaddle.increaseSpeed()
             this.particles.createExplosion(this.ball.position)
             this.resetBall()
         }
